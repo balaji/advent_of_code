@@ -1,6 +1,6 @@
 -module(utils).
 
--export([read/2]).
+-export([read/2, replace_nth_value/3]).
 
 read(FileName, SplitToken) ->
   {ok, Device} = file:open(FileName, [read]),
@@ -14,3 +14,7 @@ get_content(Device, Content) ->
     eof -> Content;
     Line -> get_content(Device, Line ++ Content)
   end.
+
+replace_nth_value(List, Position, Value) ->
+  {L, [_ | R]} = lists:split(Position, List),
+  L ++ [Value] ++ R.
