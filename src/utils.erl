@@ -1,18 +1,21 @@
 -module(utils).
 
--export([read/2, replace_nth_value/3]).
+-export([read_as_integers/2, content/1, replace_nth_value/3]).
 
-read(FileName, SplitToken) ->
-  {ok, Device} = file:open(FileName, [read]),
-  Content = try get_content(Device, "")
-            after file:close(Device)
-            end,
+read_as_integers(FileName, SplitToken) ->
+  Content = content(FileName),
   [begin {Int, _} = string:to_integer(Token), Int end || Token <- string:tokens(Content, SplitToken)].
 
-get_content(Device, Content) ->
+content(FileName) ->
+  {ok, Device} = file:open(FileName, [read]),
+  try raw_content(Device, "")
+  after file:close(Device)
+  end.
+
+raw_content(Device, Content) ->
   case io:get_line(Device, "") of
     eof -> Content;
-    Line -> get_content(Device, Line ++ Content)
+    Line -> raw_content(Device, Line ++ Content)
   end.
 
 replace_nth_value(List, Position, Value) ->
