@@ -1,15 +1,20 @@
 -module(utils).
 
--export([read/1]).
+-export([read/2, replace_nth_value/3]).
 
-read(FileName) ->
+read(FileName, SplitToken) ->
   {ok, Device} = file:open(FileName, [read]),
-  try get_all_lines(Device, [])
-  after file:close(Device)
+  Content = try get_content(Device, "")
+            after file:close(Device)
+            end,
+  [begin {Int, _} = string:to_integer(Token), Int end || Token <- string:tokens(Content, SplitToken)].
+
+get_content(Device, Content) ->
+  case io:get_line(Device, "") of
+    eof -> Content;
+    Line -> get_content(Device, Line ++ Content)
   end.
 
-get_all_lines(Device, List) ->
-  case io:get_line(Device, "") of
-    eof -> List;
-    Line -> get_all_lines(Device, [list_to_integer(string:trim(Line)) | List])
-  end.
+replace_nth_value(List, Position, Value) ->
+  {L, [_ | R]} = lists:split(Position, List),
+  L ++ [Value] ++ R.

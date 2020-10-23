@@ -2,13 +2,14 @@
 
 -export([main/1]).
 
-main([FileName | _]) ->  
-  calculate(utils:read(FileName), 0).
+main([FileName | _]) ->
+  Codes = utils:read(FileName, "\n"),
+  calculate(Codes, 0).
 
-calculate([N | T], Accum) ->
-  calculate(T, Accum + fuel(N));
-calculate([], Accum) ->
-  io:format("~p~n", [Accum]).
+calculate([N | T], Acc) ->
+  calculate(T, Acc + fuel(N));
+calculate([], Acc) ->
+  io:format("~p~n", [Acc]).
 
 fuel(N) ->
   V = floor(N / 3) - 2,
