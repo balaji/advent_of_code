@@ -1,9 +1,9 @@
 -module(day2).
--import('utils', [read/2, replace_nth_value/3]).
+-import('utils', [read_as_integers/2, replace_nth_value/3]).
 -export([main/1]).
 
 main([FileName | _]) ->
-  IntCode = read(FileName, ","),
+  IntCode = read_as_integers(FileName, ","),
   extension(IntCode, 1, 1).
 
 extension(List, X, Y) ->
