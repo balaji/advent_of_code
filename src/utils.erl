@@ -1,6 +1,6 @@
 -module(utils).
 
--export([read_as_integers/2, content/1, replace_nth_value/3]).
+-export([read_as_integers/2, content/1, replace_nth_value/3, remove_dups/1]).
 
 read_as_integers(FileName, SplitToken) ->
   Content = content(FileName),
@@ -21,3 +21,6 @@ raw_content(Device, Content) ->
 replace_nth_value(List, Position, Value) ->
   {L, [_ | R]} = lists:split(Position, List),
   L ++ [Value] ++ R.
+
+remove_dups([])    -> [];
+remove_dups([H|T]) -> [H | [X || X <- remove_dups(T), X /= H]].
