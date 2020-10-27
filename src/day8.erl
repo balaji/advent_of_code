@@ -4,26 +4,32 @@
 
 
 main() ->
-  [C | _] = utils:read_as_integers("inputs/day8.txt", ""),
-  Layers = make_layers(integer_to_list(C), 25 * 6),
-  {Key, _} = max_of([{Key, count_element($0, maps:get(Key, Layers))} || Key <- maps:keys(Layers)]),
-  Layer = maps:get(Key, Layers),
-  count_element($1, Layer) * count_element($2, Layer).
+  C = utils:content("inputs/day8.txt"),
+  LayersMap = make_layers(C, 25 * 6),
+  [First | Layers] = LayersMap,
+  Layer = min_of(Layers, First),
+  io:format("~p ~p ~n", [count_element($1, Layer) * count_element($2, Layer), superimpose(Layers, First)]).
 
-max_of([H | T]) -> max_of(T, H).
-max_of([], Value) -> Value;
-max_of([{K, V} | T], {_, MaxValue}) when V =< MaxValue -> max_of(T, {K, V});
-max_of([_ | T], Value) -> max_of(T, Value).
+superimpose([], Result) -> Result;
+superimpose([F | T], Result) ->
+  superimpose(T, merge(Result, F, [])).
 
-make_layers(List, Split) ->
-  make_layers(List, Split, maps:new(), 0).
+merge([], [], R) -> R;
+merge([$2 | Ad], [B | Bd], R) -> merge(Ad, Bd, R ++ [B]);
+merge([A | Ad], [_ | Bd], R) -> merge(Ad, Bd, R ++ [A]).
 
-make_layers(List, Split, Layers, Count) ->
-  SubList = lists:sublist(List, (Split * Count) + 1, Split),
-  case SubList of
-    [] -> Layers;
-    _ -> make_layers(List, Split, maps:put(Count + 1, SubList, Layers), Count + 1)
+min_of([], Value) -> Value;
+min_of([H | T], Value) ->
+  [Vc, Hc] = [count_element($0, Value), count_element($0, H)],
+  if Vc > Hc -> min_of(T, H);
+    true -> min_of(T, Value)
   end.
+
+make_layers(List, Split) -> make_layers(List, Split, [], []).
+
+make_layers([], _, _, R) -> R;
+make_layers(L, Split, Acc, R) when length(Acc) == Split -> make_layers(L, Split, [], R ++ [Acc]);
+make_layers([H | T], Split, Acc, R) -> make_layers(T, Split, Acc ++ [H], R).
 
 count_element(Element, List) ->
   count_element(Element, List, 0).
