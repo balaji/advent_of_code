@@ -29,7 +29,7 @@ calculate(IntCode, RelativeBase, Start) ->
       Num1 = interpreted_find(C, RelativeBase, Param, IntCode),
       if
         X == 3 ->
-          calculate(replace_nth_value(IntCode, literal_find(C, RelativeBase, Param), 1), RelativeBase, Start + 2);
+          calculate(replace_nth_value(IntCode, literal_find(C, RelativeBase, Param), 2), RelativeBase, Start + 2);
         X == 4 -> io:format("outputting: ~p~n", [Num1]), calculate(IntCode, RelativeBase, Start + 2);
         X == 9 -> calculate(IntCode, RelativeBase + Num1, Start + 2)
       end;
