@@ -1,6 +1,6 @@
 -module(utils).
 
--export([read_as_integers/2, content/1, replace_nth_value/3, remove_dups/1]).
+-export([read_as_integers/2, content/1, replace_nth_value/3, remove_dups/1, gcd/2]).
 
 read_as_integers(FileName, SplitToken) ->
   Content = content(FileName),
@@ -24,3 +24,8 @@ replace_nth_value(List, Position, Value) ->
 
 remove_dups([])    -> [];
 remove_dups([H|T]) -> [H | [X || X <- remove_dups(T), X /= H]].
+
+gcd(A, B) when B > A -> gcd(B, A);
+gcd(A, 0) -> A;
+gcd(A, B) when A rem B > 0 -> gcd(B, A rem B);
+gcd(A, B) when A rem B == 0 -> B.
