@@ -7,10 +7,17 @@ main() ->
   C = string:tokens(utils:content("inputs/day10.txt"), "\n"),
   Asteroids = asteroids(C, [], length(C) - 1),
   [Max | Visibility] = visibility(Asteroids, Asteroids, []),
-  find_max(Visibility, Max).
+  {Point, AllHit} = find_max(Visibility, Max),
+  ClockWiseHits = slope(Point, AllHit, []),
+  {_, {X, Y}} = lists:nth(200, ClockWiseHits),
+  io:format("length: ~p, base: ~p, 200th: ~p~n", [length(AllHit), Point, (X * 100) + Y]).
+
+slope(_, [], Acc) -> lists:sort(fun({A, _}, {B, _}) -> A < B end, Acc);
+slope({X1, Y1}, [{X2, Y2} | T], Acc) ->
+  slope({X1, Y1}, T, [{math:fmod(270 + (math:atan2(Y1 - Y2, X1 - X2) * 180 / math:pi()), 360.0), {X2, Y2}} | Acc]).
 
 find_max([], Max) -> Max;
-find_max([{A, Count} | T], {_, Max}) when Count > Max -> find_max(T, {A, Count});
+find_max([{Total, Obstructions} | T], {_, Max}) when length(Obstructions) > length(Max) -> find_max(T, {Total, Obstructions});
 find_max([_ | T], M) -> find_max(T, M).
 
 visibility([], _, Acc) -> Acc;
@@ -24,18 +31,24 @@ asteroid_row([], Acc, _, _) -> Acc;
 asteroid_row([$. | T], Acc, X, Y) -> asteroid_row(T, Acc, X + 1, Y);
 asteroid_row([$# | T], Acc, X, Y) -> asteroid_row(T, [{X, Y} | Acc], X + 1, Y).
 
-count(_, [], Asteroids, Acc) -> length(Asteroids) - length(utils:remove_dups(Acc)) - 1;
+count(Origin, [], Asteroids, Acc) ->
+  [Rest, AllObstructions] = [lists:delete(Origin, Asteroids), utils:remove_dups(Acc)],
+  lists:subtract(Rest, AllObstructions);
 count(Origin, [Asteroid | T], Asteroids, Acc) ->
-  count(Origin, T, Asteroids, Acc ++ asteroids_in_path(trace(Origin, Asteroid), Asteroids)).
+  Obstructions = asteroids_in_path(trace(Origin, Asteroid), Asteroids),
+  case Obstructions of
+    [] -> count(Origin, T, Asteroids, Acc);
+    _ -> count(Origin, T, Asteroids, Acc ++ [Asteroid])
+  end.
 
 trace(PointA, PointB) ->
-  lists:delete(PointA, all_points(slope(PointA, PointB), PointB, [PointA])).
+  lists:delete(PointA, all_points(hit_path(PointA, PointB), PointB, [PointA])).
 
 all_points(_, {Xd, Yd}, [{X, Y} | T]) when X == Xd, Y == Yd -> T;
 all_points([XS, YS], Limits, [{X, Y} | T]) ->
   all_points([XS, YS], Limits, [{X + XS, Y + YS} | [{X, Y} | T]]).
 
-slope({X_Origin, Y_Origin}, {X, Y}) ->
+hit_path({X_Origin, Y_Origin}, {X, Y}) ->
   GCD = utils:gcd(abs(Y - Y_Origin), abs(X - X_Origin)),
   [floor((X - X_Origin) / GCD), floor((Y - Y_Origin) / GCD)].
 
