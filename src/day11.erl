@@ -6,14 +6,14 @@
 main() ->
   IntCode = read_as_integers("inputs/day11.txt", ","),
   ZeroPaddedList = array:to_list(array:new([{size, 1000}, {default, 0}])),
-  calculate(lists:append(IntCode, ZeroPaddedList), 0, 1, [], [{north, 0, {0, 0}}]).
+  calculate(lists:append(IntCode, ZeroPaddedList), 0, 1, [], [{north, 1, {0, 0}}]).
 
 calculate(IntCode, RelativeBase, Pointer, InputOutput, Panel) ->
   [Head | T] = lists:sublist(IntCode, Pointer, 4),
   [{A, []}, {B, []}, {C, []}, {D, []}, {E, []}] = [string:to_integer(integer_to_list(N - 48)) || N <- io_lib:format("~5..0B", [Head])],
   Code = D * 10 + E,
   case Code of
-    X when X == 99 -> io:format("halted Panel: ~p~n", [length(Panel)]);
+    X when X == 99 -> io:format("~p~n", [Panel]);
     X when X == 1; X == 2; X == 7; X == 8 ->
       [Pos1, Pos2, Pos3] = T,
       Num1 = interpreted_find(C, RelativeBase, Pos1, IntCode),
@@ -30,12 +30,11 @@ calculate(IntCode, RelativeBase, Pointer, InputOutput, Panel) ->
       Num1 = interpreted_find(C, RelativeBase, Param, IntCode),
       if
         X == 3 ->
-          if InputOutput == [] -> Input = 0, NewPanel = Panel;
+          if InputOutput == [] -> Input = 1, NewPanel = Panel;
             true ->
               [_, Move] = InputOutput,
               [{Direction, _, Point} | _] = Panel,
               [NewDirection, NewPoint] = change_direction(Move, Direction, Point),
-              %% find if the new point exists, if so, get it because that has the input. Otherwise insert as black.
               NewPanel = make_panel(Panel, {NewDirection, 0, NewPoint}),
               [{_, Input, _} | _] = NewPanel
           end,
@@ -79,8 +78,8 @@ make_panel(Panel, {D, C, {X, Y}}) ->
   Search = [{Direction, Color, {X1, Y1}} || {Direction, Color, {X1, Y1}} <- Panel, X == X1, Y == Y1],
   if
     length(Search) == 1 ->
-      [{Dx, Cx, Px} | _] = Search,
-      [{D, Cx, {X, Y}}] ++ lists:delete({Dx, Cx, Px}, Panel);
+      [{_, Cx, _} | _] = Search,
+      [{D, Cx, {X, Y}}] ++ Panel;
     length(Search) > 1 -> io:format("unexpected fail~n");
     true -> [{D, C, {X, Y}} | Panel]
   end.
