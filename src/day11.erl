@@ -30,14 +30,15 @@ calculate(IntCode, RelativeBase, Pointer, InputOutput, Panel) ->
       Num1 = interpreted_find(C, RelativeBase, Param, IntCode),
       if
         X == 3 ->
-          if InputOutput == [] -> Input = 1, NewPanel = Panel;
+          if
+            InputOutput == [] -> NewPanel = Panel;
             true ->
               [_, Move] = InputOutput,
               [{Direction, _, Point} | _] = Panel,
               [NewDirection, NewPoint] = change_direction(Move, Direction, Point),
-              NewPanel = make_panel(Panel, {NewDirection, 0, NewPoint}),
-              [{_, Input, _} | _] = NewPanel
+              NewPanel = make_panel(Panel, {NewDirection, 0, NewPoint})
           end,
+          [{_, Input, _} | _] = NewPanel,
           calculate(replace_nth_value(IntCode, literal_find(C, RelativeBase, Param), Input), RelativeBase, Pointer + 2, [], NewPanel);
         X == 4 ->
           PaintedPanel = if
@@ -77,10 +78,10 @@ interpreted_find(Mode, RelativeBase, Pos, List) ->
 make_panel(Panel, {D, C, {X, Y}}) ->
   Search = [{Direction, Color, {X1, Y1}} || {Direction, Color, {X1, Y1}} <- Panel, X == X1, Y == Y1],
   if
+    length(Search) > 1 -> io:format("unexpected fail~n");
     length(Search) == 1 ->
       [{_, Cx, _} | _] = Search,
       [{D, Cx, {X, Y}}] ++ Panel;
-    length(Search) > 1 -> io:format("unexpected fail~n");
     true -> [{D, C, {X, Y}} | Panel]
   end.
 
