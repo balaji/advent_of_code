@@ -1,16 +1,15 @@
 -module(day12).
 
--export([main/0]).
+-export([main/1]).
 
-
-main() ->
-  C = string:tokens(utils:content("inputs/2019/day12.txt"), "\n"),
+main([FileName | _]) ->
+  C = string:tokens(utils:content(FileName), "\n"),
   Moons = convert(C, []),
   Velocities = [array:to_list(array:new(3, {default, 0})),
     array:to_list(array:new(3, {default, 0})),
     array:to_list(array:new(3, {default, 0})),
     array:to_list(array:new(3, {default, 0}))],
-  steps(Moons, Velocities, Moons, Velocities,lists:seq(1, 4, 1), lists:seq(1, 3, 1), 0).
+  steps(Moons, Velocities, Moons, Velocities, lists:seq(1, 4, 1), lists:seq(1, 3, 1), 0).
 
 steps(Moons, Velocities, OrigMoon, OrigVel, _, _, Count) when Count > 1, Moons == OrigMoon, Velocities == OrigVel ->
   Count;

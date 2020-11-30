@@ -1,10 +1,10 @@
 -module(day9).
 -import('utils', [read_as_integers/2, replace_nth_value/3]).
 
--export([main/0]).
+-export([main/1]).
 
-main() ->
-  IntCode = read_as_integers("inputs/2019/day9.txt", ","),
+main([FileName | _]) ->
+  IntCode = read_as_integers(FileName, ","),
   calculate(lists:append(IntCode, array:to_list(array:new([{size, 50000}, {default, 0}]))), 0, 1).
 
 calculate(IntCode, RelativeBase, Start) ->

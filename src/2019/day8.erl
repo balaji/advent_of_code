@@ -1,10 +1,10 @@
 -module(day8).
 
--export([main/0]).
+-export([main/1]).
 
 
-main() ->
-  C = utils:content("inputs/2019/day8.txt"),
+main([FileName | _]) ->
+  C = utils:content(FileName),
   LayersMap = make_layers(C, 25 * 6),
   [First | Layers] = LayersMap,
   Layer = min_of(Layers, First),

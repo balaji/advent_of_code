@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+YEAR=2020
+erlc src/util/utils.erl
+erlc src/$YEAR/day"$1".erl
+erl -s "day$1" main "inputs/$YEAR/day$1.txt" -s init stop -noshell

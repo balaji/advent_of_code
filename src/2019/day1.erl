@@ -1,9 +1,9 @@
 -module(day1).
 
--export([main/0]).
+-export([main/1]).
 
-main() ->
-  Codes = utils:read_as_integers("inputs/2019/day1.txt", "\n"),
+main([FileName | _]) ->
+  Codes = utils:read_as_integers(FileName, "\n"),
   calculate(Codes, 0).
 
 calculate([N | T], Acc) ->
@@ -14,6 +14,6 @@ calculate([], Acc) ->
 fuel(N) ->
   V = floor(N / 3) - 2,
   case V of
-    X when X < 6 ->  V;
+    X when X < 6 -> V;
     Y -> V + fuel(Y)
   end.

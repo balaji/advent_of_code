@@ -1,10 +1,10 @@
 -module(day10).
 
--export([main/0]).
+-export([main/1]).
 
 
-main() ->
-  C = string:tokens(utils:content("inputs/2019/day10.txt"), "\n"),
+main([FileName | _]) ->
+  C = string:tokens(utils:content(FileName), "\n"),
   Asteroids = asteroids(C, [], length(C) - 1),
   [Max | Visibility] = visibility(Asteroids, Asteroids, []),
   {Point, AllHit} = find_max(Visibility, Max),
@@ -17,7 +17,8 @@ slope({X1, Y1}, [{X2, Y2} | T], Acc) ->
   slope({X1, Y1}, T, [{math:fmod(270 + (math:atan2(Y1 - Y2, X1 - X2) * 180 / math:pi()), 360.0), {X2, Y2}} | Acc]).
 
 find_max([], Max) -> Max;
-find_max([{Total, Obstructions} | T], {_, Max}) when length(Obstructions) > length(Max) -> find_max(T, {Total, Obstructions});
+find_max([{Total, Obstructions} | T], {_, Max}) when length(Obstructions) > length(Max) ->
+  find_max(T, {Total, Obstructions});
 find_max([_ | T], M) -> find_max(T, M).
 
 visibility([], _, Acc) -> Acc;

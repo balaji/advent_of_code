@@ -1,9 +1,9 @@
 -module(day7).
 -import('utils', [read_as_integers/2, replace_nth_value/3]).
--export([main/0]).
+-export([main/1]).
 
-main() ->
-  IntCode = read_as_integers("inputs/2019/day7.txt", ","),
+main([FileName | _]) ->
+  IntCode = read_as_integers(FileName, ","),
   PhaseCodes = [5, 6, 7, 8, 9],
   Amplifiers = #{5 => {IntCode, 1, [5]}, 6 => {IntCode, 1, [6]}, 7 => {IntCode, 1, [7]}, 8 => {IntCode, 1, [8]}, 9 => {IntCode, 1, [9]}},
   Amplified = [calculate(Amplifiers, [A, B, C, D, E]) ||

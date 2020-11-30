@@ -1,8 +1,8 @@
 -module(day4).
--export([main/0]).
+-export([main/1]).
 
 
-main() ->
+main(_) ->
   password(128392, 0).
 
 password(643281, Acc) -> Acc;

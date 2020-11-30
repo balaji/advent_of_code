@@ -1,9 +1,9 @@
 -module(day2).
 -import('utils', [read_as_integers/2, replace_nth_value/3]).
--export([main/0]).
+-export([main/1]).
 
-main() ->
-  IntCode = read_as_integers("inputs/2019/day2.txt", ","),
+main([FileName | _]) ->
+  IntCode = read_as_integers(FileName, ","),
   extension(IntCode, 1, 1).
 
 extension(List, X, Y) ->

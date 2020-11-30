@@ -1,10 +1,10 @@
 -module(day11).
 -import('utils', [read_as_integers/2, replace_nth_value/3]).
 
--export([main/0]).
+-export([main/1]).
 
-main() ->
-  IntCode = read_as_integers("inputs/2019/day11.txt", ","),
+main([FileName | _]) ->
+  IntCode = read_as_integers(FileName, ","),
   ZeroPaddedList = array:to_list(array:new([{size, 1000}, {default, 0}])),
   calculate(lists:append(IntCode, ZeroPaddedList), 0, 1, [], [{north, 1, {0, 0}}]).
 

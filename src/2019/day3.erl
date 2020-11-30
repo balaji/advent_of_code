@@ -1,8 +1,8 @@
 -module(day3).
--export([main/0]).
+-export([main/1]).
 
-main() ->
-  [C1, C2] = string:tokens(utils:content("inputs/2019/day3.txt"), "\n"),
+main([FileName | _]) ->
+  [C1, C2] = string:tokens(utils:content(FileName), "\n"),
   CoOrds1 = perform(string:tokens(C2, ","), [{0, 0, 0, 0, {0, 0}}]),
   CoOrds2 = perform(string:tokens(C1, ","), [{0, 0, 0, 0, {0, 0}}]),
   Intersections = multiply(CoOrds1, CoOrds2),
