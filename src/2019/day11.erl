@@ -4,7 +4,7 @@
 -export([main/0]).
 
 main() ->
-  IntCode = read_as_integers("inputs/day11.txt", ","),
+  IntCode = read_as_integers("inputs/2019/day11.txt", ","),
   ZeroPaddedList = array:to_list(array:new([{size, 1000}, {default, 0}])),
   calculate(lists:append(IntCode, ZeroPaddedList), 0, 1, [], [{north, 1, {0, 0}}]).
 

@@ -1,9 +1,9 @@
 -module(day1).
 
--export([main/1]).
+-export([main/0]).
 
-main([FileName | _]) ->
-  Codes = utils:read_as_integers(FileName, "\n"),
+main() ->
+  Codes = utils:read_as_integers("inputs/2019/day1.txt", "\n"),
   calculate(Codes, 0).
 
 calculate([N | T], Acc) ->

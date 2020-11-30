@@ -4,7 +4,7 @@
 
 
 main() ->
-  Content = utils:content("inputs/day6.txt"),
+  Content = utils:content("inputs/2019/day6.txt"),
   OrbitMap = maps:from_list(lists:map(fun(A) ->
     [V1, V2] = string:tokens(A, ")"),
     {V2, V1} end, [Token || Token <- string:tokens(Content, "\n")])),

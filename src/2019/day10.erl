@@ -4,7 +4,7 @@
 
 
 main() ->
-  C = string:tokens(utils:content("inputs/day10.txt"), "\n"),
+  C = string:tokens(utils:content("inputs/2019/day10.txt"), "\n"),
   Asteroids = asteroids(C, [], length(C) - 1),
   [Max | Visibility] = visibility(Asteroids, Asteroids, []),
   {Point, AllHit} = find_max(Visibility, Max),

@@ -4,7 +4,7 @@
 
 
 main() ->
-  C = string:tokens(utils:content("inputs/day12.txt"), "\n"),
+  C = string:tokens(utils:content("inputs/2019/day12.txt"), "\n"),
   Moons = convert(C, []),
   Velocities = [array:to_list(array:new(3, {default, 0})),
     array:to_list(array:new(3, {default, 0})),

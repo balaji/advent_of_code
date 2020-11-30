@@ -4,7 +4,7 @@
 -export([main/0]).
 
 main() ->
-  IntCode = read_as_integers("inputs/day9.txt", ","),
+  IntCode = read_as_integers("inputs/2019/day9.txt", ","),
   calculate(lists:append(IntCode, array:to_list(array:new([{size, 50000}, {default, 0}]))), 0, 1).
 
 calculate(IntCode, RelativeBase, Start) ->

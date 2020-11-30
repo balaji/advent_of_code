@@ -4,7 +4,7 @@
 
 
 main() ->
-  C = utils:content("inputs/day8.txt"),
+  C = utils:content("inputs/2019/day8.txt"),
   LayersMap = make_layers(C, 25 * 6),
   [First | Layers] = LayersMap,
   Layer = min_of(Layers, First),

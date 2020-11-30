@@ -3,7 +3,7 @@
 -export([main/0]).
 
 main() ->
-  IntCode = read_as_integers("inputs/day7.txt", ","),
+  IntCode = read_as_integers("inputs/2019/day7.txt", ","),
   PhaseCodes = [5, 6, 7, 8, 9],
   Amplifiers = #{5 => {IntCode, 1, [5]}, 6 => {IntCode, 1, [6]}, 7 => {IntCode, 1, [7]}, 8 => {IntCode, 1, [8]}, 9 => {IntCode, 1, [9]}},
   Amplified = [calculate(Amplifiers, [A, B, C, D, E]) ||
