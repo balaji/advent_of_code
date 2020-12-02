@@ -17,15 +17,11 @@ main([FileName | _]) ->
   io:format("~p~n", [lists:sum([valid_password2(S) || S <- F])]).
 
 valid_password([Lower, Upper, Char, Password]) ->
-  Count = count_characters(Password, Char, 0),
+  Count = length(lists:filter(fun(C) -> C == Char end, Password)),
   if
     Count >= Lower, Count =< Upper -> 1;
     true -> 0
   end.
-
-count_characters([], _, Acc) -> Acc;
-count_characters([H | T], H, Acc) -> count_characters(T, H, Acc + 1);
-count_characters([_ | T], H, Acc) -> count_characters(T, H, Acc).
 
 valid_password2([Lower, Upper, Char, Password]) ->
   [A, B] = [lists:nth(Lower, Password), lists:nth(Upper, Password)],
