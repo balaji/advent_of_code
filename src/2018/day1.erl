@@ -6,7 +6,7 @@
 
 
 main([FileName | _]) ->
-  L = lists:reverse(utils:read_as_integers(FileName, "\n")),
+  L = utils:read_as_integers(FileName, "\n"),
   Part1 = frequency(L, 0),
   Part2 = find_twice(L, L, sets:new(), 0),
   io:format("~p ~p~n", [Part1, Part2]).

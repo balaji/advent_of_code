@@ -15,7 +15,7 @@ content(FileName) ->
 raw_content(Device, Content) ->
   case io:get_line(Device, "") of
     eof -> Content;
-    Line -> raw_content(Device, Line ++ Content)
+    Line -> raw_content(Device, Content ++ Line)
   end.
 
 replace_nth_value(List, Position, Value) ->
