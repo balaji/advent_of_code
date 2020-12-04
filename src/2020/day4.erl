@@ -6,14 +6,9 @@
 
 main([FileName | _]) ->
   L = [re:split(S, "[\n ]+", [{return, list}]) || S <- string:split(utils:content(FileName), "\n\n", all)],
-  M = [lists:map(
-    fun(X) ->
-      list_to_tuple(string:split(X, ":"))
-    end, S)
-    || S <- L],
+  M = [lists:map(fun(X) -> list_to_tuple(string:split(X, ":")) end, S) || S <- L],
   R = [maps:from_list(I) || I <- M],
-  F = [validate(I) || I <- R],
-  io:format("~p~n", [length(lists:filter(fun(X) -> X == true end, F))]).
+  io:format("~p~n", [length(lists:filter(fun(X) -> X == true end, [validate(I) || I <- R]))]).
 
 validate(M) ->
   Length = length(maps:keys(M)),
@@ -24,9 +19,9 @@ validate(M) ->
       if
         Length == 8; HasCid == false ->
           length(lists:filter(fun(X) -> X == true end,
-            [birth_year(maps:get("byr", M)),
-            issue_year(maps:get("iyr", M)),
-            expiration_year(maps:get("eyr", M)),
+            [validate_year(maps:get("byr", M), 1920, 2002),
+            validate_year(maps:get("iyr", M), 2010, 2020),
+            validate_year(maps:get("eyr", M), 2020, 2030),
             passport_id(maps:get("pid", M)),
             eye_color(maps:get("ecl", M)),
             hair_color(maps:get("hcl", M)),
@@ -35,31 +30,13 @@ validate(M) ->
       end
   end.
 
-birth_year(K) ->
+validate_year(K, Start, End) ->
   V = utils:is_integer(K),
   if
     V == true ->
       Y = list_to_integer(K),
-      if Y >= 1920, Y =< 2002 -> true; true -> false end;
+      if Y >= Start, Y =< End -> true; true -> false end;
       true -> false
-  end.
-
-issue_year(K) ->
-  V = utils:is_integer(K),
-  if
-    V == true ->
-      Y = list_to_integer(K),
-      if Y >= 2010, Y =< 2020 -> true; true -> false end;
-    true -> false
-  end.
-
-expiration_year(K) ->
-  V = utils:is_integer(K),
-  if
-    V == true ->
-      Y = list_to_integer(K),
-      if Y >= 2020, Y =< 2030 -> true; true -> false end;
-    true -> false
   end.
 
 eye_color(C) ->
