@@ -1,6 +1,6 @@
 -module(utils).
 
--export([read_as_integers/2, content/1, replace_nth_value/3, remove_dups/1, gcd/2, array_fetch/3]).
+-export([read_as_integers/2, content/1, replace_nth_value/3, remove_dups/1, gcd/2, array_fetch/3, is_integer/1]).
 
 read_as_integers(FileName, SplitToken) ->
   Content = content(FileName),
@@ -32,3 +32,11 @@ gcd(A, B) when A rem B == 0 -> B.
 
 array_fetch(Array, I, J) ->
   lists:nth(J, lists:nth(I, Array)).
+
+is_integer(S) ->
+  try
+    _ = list_to_integer(S),
+    true
+  catch error:badarg ->
+    false
+  end.
