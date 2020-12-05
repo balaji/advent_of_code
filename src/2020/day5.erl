@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-    RowNums = string:tokens(utils:content(FileName), "\n"),
+    RowNums = utils:as_strings(FileName),
     io:format("~p~n",
 	      [missing_seat(lists:sort([row_number(L) || L <- RowNums]))]).
 
