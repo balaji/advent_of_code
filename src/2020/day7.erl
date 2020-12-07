@@ -8,25 +8,33 @@ main([FileName | _]) ->
         fun([A, B]) -> 
             K = re:replace(A, "( bag| bags)$", "", [{return, list}]),
             Vr = string:split(re:replace(B, "( bags| bag|\\.$)", "", [global, {return, list}]), ", ", all),
-            V = [lists:nth(2, string:split(I, " "))|| I <- Vr],    
-            [[I, K] || I <- V]
+            V = lists:map(fun(I) -> 
+                [Num, Key] = string:split(I, " "),
+                C = if Num == "no" -> 0;
+                    true -> list_to_integer(Num)
+                end,
+                {Key, C}
+            end, Vr),
+            [K, V]
         end, L),
-        M = make_map(lists:merge(X), maps:new()),
-    io:format("~p~n", [sets:size(calculate_length("shiny gold", M, sets:new()))]).
+        M = make_map(X, maps:new()),
+io:format("~p~n", [calculate_length("shiny gold", M, 0)]).
 
 make_map([], M) -> M;
 make_map([[A, B] | T], M) ->
     IsKey = maps:is_key(A, M),
     if 
-        IsKey == true -> L = maps:get(A, M), make_map(T, maps:put(A, L ++ [B], M));
-        true -> make_map(T, maps:put(A, [B], M))
+        IsKey == true -> L = maps:get(A, M), make_map(T, maps:put(A, lists:merge(L, B), M));
+        true -> make_map(T, maps:put(A, B, M))
     end.
 
-calculate_length(Key, Map, Set) ->
+calculate_length(Key, Map, Count) ->
     IsKey = maps:is_key(Key, Map),
     if
-        IsKey == false -> Set;        
+        IsKey == false -> Count;        
         true -> 
             L = maps:get(Key, Map),
-            sets:union(lists:map(fun(E)-> calculate_length(E, Map, sets:add_element(E, Set)) end, L))
+            lists:sum(lists:map(fun({K2, C2}) ->
+                C2 + (C2 * calculate_length(K2, Map, Count))
+            end, L))
     end.
