@@ -3,38 +3,38 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-    L = [string:split(S, " contain ") || S <- utils:as_strings(FileName)],
-    X = lists:map(
-        fun([A, B]) -> 
-            K = re:replace(A, "( bag| bags)$", "", [{return, list}]),
-            Vr = string:split(re:replace(B, "( bags| bag|\\.$)", "", [global, {return, list}]), ", ", all),
-            V = lists:map(fun(I) -> 
-                [Num, Key] = string:split(I, " "),
-                C = if Num == "no" -> 0;
-                    true -> list_to_integer(Num)
-                end,
-                {Key, C}
-            end, Vr),
-            [K, V]
-        end, L),
-        M = make_map(X, maps:new()),
-io:format("~p~n", [calculate_length("shiny gold", M, 0)]).
+    L = [string:split(re:replace(S, "( bags| bag|\\.$)", "", [global, {return, list}]), " contain ")
+         || S <- utils:as_strings(FileName)],
+    X = lists:map(fun ([K, B]) ->
+                          V = lists:map(fun (I) ->
+                                                [Num, Key] = string:split(I, " "),
+                                                {Key,
+                                                 if Num == "no" -> 0; true -> list_to_integer(Num) end}
+                                        end, string:split(B, ", ", all)),
+                          {K, V}
+                  end, L),
+    M = maps:from_list(X),
+    io:format("~p, ~p~n",
+              [lists:sum([if E == true -> 1; true -> 0 end
+                                    || E <- [part1(K, M) || K <- maps:keys(M)]]) - 1,
+               part2("shiny gold", M, 0)]).
 
-make_map([], M) -> M;
-make_map([[A, B] | T], M) ->
-    IsKey = maps:is_key(A, M),
-    if 
-        IsKey == true -> L = maps:get(A, M), make_map(T, maps:put(A, lists:merge(L, B), M));
-        true -> make_map(T, maps:put(A, B, M))
+part1(Key, Map) ->
+    IsShiny = Key == "shiny gold",
+    if IsShiny == true -> true;
+       true ->
+           case maps:is_key(Key, Map) of
+               false -> false;
+               true ->
+                   lists:any(fun (R) -> R == true end,
+                             lists:map(fun ({K, _}) -> part1(K, Map) end, maps:get(Key, Map)))
+           end
     end.
 
-calculate_length(Key, Map, Count) ->
+part2(Key, Map, Count) ->
     IsKey = maps:is_key(Key, Map),
-    if
-        IsKey == false -> Count;        
-        true -> 
-            L = maps:get(Key, Map),
-            lists:sum(lists:map(fun({K2, C2}) ->
-                C2 + (C2 * calculate_length(K2, Map, Count))
-            end, L))
+    if IsKey == false -> Count;
+       true ->
+           L = maps:get(Key, Map),
+           lists:sum(lists:map(fun ({K2, C2}) -> C2 + C2 * part2(K2, Map, Count) end, L))
     end.
