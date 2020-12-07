@@ -8,7 +8,8 @@
          as_strings/1,
          read_as_strings/2,
          remove_dups/1,
-         replace_nth_value/3]).
+         replace_nth_value/3,
+         bin_to_hex/1]).
 
 read_as_integers(FileName, SplitToken) ->
     Content = content(FileName),
@@ -53,3 +54,9 @@ is_integer(S) ->
     try _ = list_to_integer(S), true catch
         error:badarg -> false
     end.
+
+bin_to_hex(Bin) when is_binary(Bin) ->
+    << <<(hex(H)),(hex(L))>> || <<H:4,L:4>> <= Bin >>.
+
+hex(C) when C < 10 -> $0 + C;
+hex(C) -> $a + C - 10.
