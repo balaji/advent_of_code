@@ -12,7 +12,7 @@ main([FileName | _]) ->
 fix(OriginalSet, Pointer) ->
     {V, Arg} = lists:nth(Pointer, OriginalSet),
     case V of
-        "acc" -> fix(OriginalSet, Pointer + 1);
+        X when X == "acc" -> fix(OriginalSet, Pointer + 1);
         X when X == "jmp"; X == "nop" -> 
             NewInst = if X == "jmp" ->  "nop"; true -> "jmp" end,
             Code = lists:sublist(OriginalSet, 1, Pointer - 1) ++ [{NewInst, Arg}] ++ lists:sublist(OriginalSet, Pointer + 1, length(OriginalSet) - Pointer),
@@ -36,4 +36,4 @@ execute(Code, Pointer, Acc, VisitedSet) ->
                 "jmp" -> execute(Code, (Pointer + Argument) rem length(Code), Acc, NewVisit);
                 "acc" -> execute(Code, Pointer + 1, Acc + Argument, NewVisit)
             end
-        end.
+    end.
