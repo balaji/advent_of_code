@@ -7,7 +7,7 @@ main([FileName | _]) ->
         [Inst, Arg] = string:split(S, " "),
         {Inst, list_to_integer(Arg)}
         end, utils:as_strings(FileName)),
-    io:format("part1: ~p, part2: ~p~n", [execute(L, 1, 0, sets:new()), fix(L, 1)]).
+    io:format("part 1: ~p, part 2: ~p~n", [execute(L, 1, 0, sets:new()), fix(L, 1)]).
 
 fix(OriginalSet, Pointer) ->
     {V, Arg} = lists:nth(Pointer, OriginalSet),

@@ -6,7 +6,7 @@ main([FileName | _]) ->
     L = utils:read_as_integers(FileName, "\n"),
     Buff = 25,
     X = part1(L, Buff, Buff + 1),
-    io:format("part1: ~p, part2: ~p~n", [X, part2(L, 1, 1, lists:nth(1, L), X)]).
+    io:format("part 1: ~p, part 2: ~p~n", [X, part2(L, 1, 1, lists:nth(1, L), X)]).
 
 part1(L, _, Pointer) when length(L) < Pointer -> error;
 part1(L, Buff, Pointer) ->

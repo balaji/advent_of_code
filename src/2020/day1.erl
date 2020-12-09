@@ -7,7 +7,7 @@
 
 main([FileName | _]) ->
   L = utils:read_as_integers(FileName, "\n"),
-  io:format("~p ~p~n", [two_sum(L, 2020, sets:from_list(L)), three_sum(L)]).
+  io:format("part 1: ~p, part 2: ~p~n", [two_sum(L, 2020, sets:from_list(L)), three_sum(L)]).
 
 two_sum([], _, _) -> no_match;
 two_sum([H | T], Target, Set) ->

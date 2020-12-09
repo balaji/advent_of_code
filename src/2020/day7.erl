@@ -14,7 +14,7 @@ main([FileName | _]) ->
                           {K, V}
                   end, L),
     M = maps:from_list(X),
-    io:format("~p, ~p~n",
+    io:format("part 1: ~p, part 2:~p~n",
               [lists:sum([if E == true -> 1; true -> 0 end
                                     || E <- [part1(K, M) || K <- maps:keys(M)]]) - 1,
                part2("shiny gold", M, 0)]).
