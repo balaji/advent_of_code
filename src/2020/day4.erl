@@ -31,12 +31,10 @@ validate(M) ->
   end.
 
 validate_year(K, Start, End) ->
-  V = utils:is_integer(K),
-  if
-    V == true ->
-      Y = list_to_integer(K),
-      if Y >= Start, Y =< End -> true; true -> false end;
-      true -> false
+  R = utils:is_integer(K),
+  case R of
+    {true, Y} when Y >= Start, Y =< End -> true;
+    _ -> false
   end.
 
 eye_color(C) ->

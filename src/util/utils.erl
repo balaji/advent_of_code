@@ -51,7 +51,7 @@ array_fetch(Array, I, J) ->
     lists:nth(J, lists:nth(I, Array)).
 
 is_integer(S) ->
-    try _ = list_to_integer(S), true catch
+    try _ = {true, list_to_integer(S)} catch
         error:badarg -> false
     end.
 
