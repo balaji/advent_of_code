@@ -3,9 +3,9 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-    RowNums = utils:as_strings(FileName),
-    io:format("~p~n",
-	      [missing_seat(lists:sort([row_number(L) || L <- RowNums]))]).
+    RowNums =[row_number(L) || L <-  utils:as_strings(FileName)],
+    io:format("part 1: ~p, part 2: ~p~n",
+	      [lists:max(RowNums), missing_seat(lists:sort(RowNums))]).
 
 missing_seat([F | [B | _] = R]) when F == B - 1 -> missing_seat(R);
 missing_seat([_ | [B | _]]) -> B - 1.

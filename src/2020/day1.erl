@@ -1,7 +1,5 @@
 -module(day1).
--author("balaji").
 
-%% API
 -export([main/1]).
 
 

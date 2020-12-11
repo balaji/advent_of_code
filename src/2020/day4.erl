@@ -1,5 +1,4 @@
 -module(day4).
--author("balaji").
 
 -export([main/1]).
 
@@ -8,26 +7,26 @@ main([FileName | _]) ->
   L = [re:split(S, "[\n ]+", [{return, list}]) || S <- string:split(utils:content(FileName), "\n\n", all)],
   M = [lists:map(fun(X) -> list_to_tuple(string:split(X, ":")) end, S) || S <- L],
   R = [maps:from_list(I) || I <- M],
-  io:format("~p~n", [length(lists:filter(fun(X) -> X == true end, [validate(I) || I <- R]))]).
+  io:format("part 1: ~p, part 2: ~p~n",
+    [length(lists:filter(fun(X) -> X == true end, [validate(I, part1) || I <- R])),
+    length(lists:filter(fun(X) -> X == true end, [validate(I, part2) || I <- R]))]).
 
-validate(M) ->
-  Length = length(maps:keys(M)),
-  if
-    Length < 7 -> 0;
-    true ->
-      HasCid = maps:is_key("cid", M),
-      if
-        Length == 8; HasCid == false ->
-          length(lists:filter(fun(X) -> X == true end,
-            [validate_year(maps:get("byr", M), 1920, 2002),
-            validate_year(maps:get("iyr", M), 2010, 2020),
-            validate_year(maps:get("eyr", M), 2020, 2030),
-            passport_id(maps:get("pid", M)),
-            eye_color(maps:get("ecl", M)),
-            hair_color(maps:get("hcl", M)),
-            height(maps:get("hgt", M))])) == 7;
-        true -> false
-      end
+validate(M, Part) ->
+  case {length(maps:keys(M)), maps:is_key("cid", M) } of
+    {L, _} when L < 7 -> false;
+    {L, HasCid} when L == 8; HasCid == false ->
+      if Part == part2 ->
+        length(lists:filter(fun(X) -> X == true end,
+              [validate_year(maps:get("byr", M), 1920, 2002),
+              validate_year(maps:get("iyr", M), 2010, 2020),
+              validate_year(maps:get("eyr", M), 2020, 2030),
+              passport_id(maps:get("pid", M)),
+              eye_color(maps:get("ecl", M)),
+              hair_color(maps:get("hcl", M)),
+              height(maps:get("hgt", M))])) == 7;
+            true -> true
+          end;
+    _ -> false
   end.
 
 validate_year(K, Start, End) ->

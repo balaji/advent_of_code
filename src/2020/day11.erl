@@ -4,9 +4,10 @@
 
 main([FileName | _]) ->
     A = array:from_list(lists:map(fun(I) -> array:from_list(I) end, utils:as_strings(FileName))),
+    Dim = {array:size(A), array:size(array:get(0, A))},
     io:format("part 1: ~p, part 2: ~p~n", [
-        play(A, {array:size(A), array:size(array:get(0, A))}, {fun(Arr, Pi, Pj, Li, Lj) -> part1(Arr, Pi, Pj, Li, Lj) end, 4}),
-        play(A, {array:size(A), array:size(array:get(0, A))}, {fun(Arr, Pi, Pj, Li, Lj) -> part2(Arr, Pi, Pj, Li, Lj) end, 5})
+        play(A, Dim, {fun(Arr, Pi, Pj, Li, Lj) -> part1(Arr, Pi, Pj, Li, Lj) end, 4}),
+        play(A, Dim, {fun(Arr, Pi, Pj, Li, Lj) -> part2(Arr, Pi, Pj, Li, Lj) end, 5})
     ]).
 
 play(A, Dim, PartFn) ->
@@ -21,17 +22,21 @@ count_seats(A) ->
         fun(_, V, Sum) ->
             Sum + array:foldl(
                 fun(_, I, Acc) ->
-                        if I == $# -> Acc + 1; true -> Acc + 0 end
+                    if I == $# -> Acc + 1; true -> Acc end
                 end, 0, V)
         end, 0, A).
 
 game(A, Modified, I, J, {Li, Lj}, {Fn, Limit}=PartFn) ->
     case I < Li of
         true when J < Lj ->
-            case {utils:array_get(A, I, J), occupied(Fn(A, I, J, Li, Lj), 0)} of
-                {$#, X} when X >= Limit -> game(A, utils:array_set(Modified, I, J, $L), I, J + 1, {Li, Lj}, PartFn);
-                {$L, X} when X == 0 -> game(A, utils:array_set(Modified, I, J, $#), I, J + 1, {Li, Lj}, PartFn);
-                _ -> game(A, Modified, I, J + 1, {Li, Lj}, PartFn)
+            case utils:array_get(A, I, J) of
+                $. -> game(A, Modified, I, J + 1, {Li, Lj}, PartFn);
+                Y ->
+                    case {Y, occupied(Fn(A, I, J, Li, Lj), 0)} of
+                        {$#, X} when X >= Limit -> game(A, utils:array_set(Modified, I, J, $L), I, J + 1, {Li, Lj}, PartFn);
+                        {$L, X} when X == 0 -> game(A, utils:array_set(Modified, I, J, $#), I, J + 1, {Li, Lj}, PartFn);
+                        _ -> game(A, Modified, I, J + 1, {Li, Lj}, PartFn)
+                    end
             end;
         true when J >= Lj ->  game(A, Modified, I + 1, 0, {Li, Lj}, PartFn);
         _ -> Modified
@@ -39,17 +44,17 @@ game(A, Modified, I, J, {Li, Lj}, {Fn, Limit}=PartFn) ->
 
 part1(Arr, Pi, Pj, Li, Lj) ->
     lists:map(fun({A, B}) -> utils:array_get(Arr, A, B) end,
-    lists:filter(fun({A, B}) -> (A < Li) and (B < Lj) and (A >= 0) and (B >= 0) end,
-    [
-        {Pi, Pj + 1},
-        {Pi, Pj - 1},
-        {Pi + 1, Pj},
-        {Pi - 1, Pj},
-        {Pi + 1, Pj + 1},
-        {Pi + 1, Pj - 1},
-        {Pi - 1, Pj + 1},
-        {Pi - 1, Pj - 1}
-    ])).
+        lists:filter(fun({A, B}) -> (A < Li) and (B < Lj) and (A >= 0) and (B >= 0) end,
+            [
+                {Pi, Pj + 1},
+                {Pi, Pj - 1},
+                {Pi + 1, Pj},
+                {Pi - 1, Pj},
+                {Pi + 1, Pj + 1},
+                {Pi + 1, Pj - 1},
+                {Pi - 1, Pj + 1},
+                {Pi - 1, Pj - 1}
+            ])).
 
 part2(Arr, Pi, Pj, Li, Lj) ->
     [
