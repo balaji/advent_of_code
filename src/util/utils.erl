@@ -9,7 +9,9 @@
          read_as_strings/2,
          remove_dups/1,
          replace_nth_value/3,
-         bin_to_hex/1]).
+         bin_to_hex/1,
+         array_get/3,
+         array_set/4]).
 
 read_as_integers(FileName, SplitToken) ->
     Content = content(FileName),
@@ -49,6 +51,15 @@ gcd(A, B) when A rem B == 0 -> B.
 
 array_fetch(Array, I, J) ->
     lists:nth(J, lists:nth(I, Array)).
+
+array_get(A, I, J) ->
+    Row = array:get(I, A),
+    array:get(J, Row).
+
+array_set(A, I, J, V) ->
+    Row = array:get(I, A),
+    NewRow = array:set(J, V, Row),
+    array:set(I, NewRow, A).
 
 is_integer(S) ->
     try _ = {true, list_to_integer(S)} catch
