@@ -30,15 +30,15 @@ calculate(IntCode, RelativeBase, Start, Step, Index) ->
       if
         X == 3 ->
           calculate(replace_nth_value(IntCode, literal_find(C, RelativeBase, Param), 2), RelativeBase, Start + 2, Step, Index);
-        X == 4 -> 
-            TileId = (Step + 1) rem 3,
-            if 
-                TileId == 0, Num1 == 2 -> 
-                    io:format("Its a block ~p~n", [Index + 1]),
-                    calculate(IntCode, RelativeBase, Start + 2, Step + 1, Index + 1);
-                true -> 
-                    calculate(IntCode, RelativeBase, Start + 2, Step + 1, Index)
-            end;
+        X == 4 ->
+          TileId = (Step + 1) rem 3,
+          if
+            TileId == 0, Num1 == 2 ->
+              io:format("Its a block ~p~n", [Index + 1]),
+              calculate(IntCode, RelativeBase, Start + 2, Step + 1, Index + 1);
+            true ->
+              calculate(IntCode, RelativeBase, Start + 2, Step + 1, Index)
+          end;
         X == 9 -> calculate(IntCode, RelativeBase + Num1, Start + 2, Step, Index)
       end;
     X when X == 5; X == 6 ->

@@ -3,8 +3,8 @@
 -export([main/1]).
 
 main([_]) ->
-    Row = 2978, Column = 3083,
-    io:format("~p~n", [find_code(20151125, row_start(row_start(1, Row, 1), Column, Row + 1))]).
+  Row = 2978, Column = 3083,
+  io:format("~p~n", [find_code(20151125, row_start(row_start(1, Row, 1), Column, Row + 1))]).
 
 row_start(N, 1, _) -> N;
 row_start(N, C, I) -> row_start(N + I, C - 1, I + 1).
