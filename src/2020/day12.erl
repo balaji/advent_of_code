@@ -12,8 +12,8 @@ part1([[D | R] | T], CurrentD, CoOrds) ->
     {$F, V} -> part1(T, CurrentD, move(CurrentD, CoOrds, V));
     {$R, V} -> part1(T, turn_ship(CurrentD, (V div 90) + 1), CoOrds);
     {$L, V} -> part1(T, turn_ship(CurrentD, abs(4 - (V div 90)) + 1), CoOrds);
-    {Dir, V} -> part1(T, CurrentD, move(Dir, CoOrds, V))
-end.
+    {D, V} -> part1(T, CurrentD, move(D, CoOrds, V))
+  end.
 
 move(Direction, {X, Y}, V) ->
   case Direction of
@@ -24,11 +24,11 @@ move(Direction, {X, Y}, V) ->
   end.
 
 turn_ship(CurrentD, V) ->
-  case {CurrentD, V} of
-    {$E, Value} -> lists:nth(Value, [$E, $S, $W, $N]);
-    {$W, Value} -> lists:nth(Value, [$W, $N, $E, $S]);
-    {$S, Value} -> lists:nth(Value, [$S, $W, $N, $E]);
-    {$N, Value} -> lists:nth(Value, [$N, $E, $S, $W])
+  case CurrentD of
+    $E -> lists:nth(V, [$E, $S, $W, $N]);
+    $W -> lists:nth(V, [$W, $N, $E, $S]);
+    $S -> lists:nth(V, [$S, $W, $N, $E]);
+    $N -> lists:nth(V, [$N, $E, $S, $W])
   end.
 
 part2([], _, {Sx, Sy}) -> abs(Sx) + abs(Sy);
@@ -37,8 +37,8 @@ part2([[D | R] | T], Waypoint, Ship) ->
     {$F, V} -> part2(T, Waypoint, move_ship(Waypoint, Ship, V));
     {$R, V} -> part2(T, rotate_waypoint(Waypoint, V), Ship);
     {$L, V} -> part2(T, rotate_waypoint(Waypoint, abs(360 - V)), Ship);
-    {Dir, V} -> part2(T, move(Dir, Waypoint, V), Ship)
-end.
+    {D, V} -> part2(T, move(D, Waypoint, V), Ship)
+  end.
 
 move_ship({X, Y}, {Sx, Sy}, V) -> {Sx + (X * V), Sy + (Y * V)}.
 
