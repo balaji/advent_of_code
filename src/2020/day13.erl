@@ -24,7 +24,7 @@ part1(Target, [BID | R], MaxMin, BusId) ->
 
 part2(_, _, [], Number) -> Number;
 part2(Og, P, [{-1, _} | T], Number) -> part2(Og, P, T, Number); % skip 'x'
-part2(Og, P, [{B, F} = Done | R], Number) when (Number + F) rem B == 0 -> part2(Og, [Done | P], R, Number);
-part2(Og, Prev, _, Number) -> part2(Og, Prev, Og, lcm(Prev, Number)).
+part2(Og, P, [{B, F} | R], Number) when (Number + F) rem B == 0 -> part2(Og, [B | P], R, Number);
+part2(Og, Prev, _, Number) -> part2(Og, [], Og, Number + lcm_all(Prev)). % brute force. But skip ahead `lcm` of rest.
 
-lcm(L, N) -> lists:foldl(fun({B, _}, Acc) -> utils:lcm(B, Acc) end, 1, L) + N.
+lcm_all(L) -> lists:foldl(fun(B, Acc) -> utils:lcm(B, Acc) end, 1, L).
