@@ -3,6 +3,7 @@
 -export([array_fetch/3,
   content/1,
   gcd/2,
+  lcm/2,
   is_integer/1,
   read_as_integers/2,
   as_strings/1,
@@ -46,8 +47,9 @@ remove_dups([H | T]) ->
 
 gcd(A, B) when B > A -> gcd(B, A);
 gcd(A, 0) -> A;
-gcd(A, B) when A rem B > 0 -> gcd(B, A rem B);
-gcd(A, B) when A rem B == 0 -> B.
+gcd(A, B) -> gcd(B, A rem B).
+
+lcm(A, B) -> A * B div gcd(A, B). 
 
 array_fetch(Array, I, J) ->
   lists:nth(J, lists:nth(I, Array)).
