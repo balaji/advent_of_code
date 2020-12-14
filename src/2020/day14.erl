@@ -11,10 +11,11 @@ process([[$m, $a, $s, $k, $ , $=, $  | R] | H], _, Acc) ->
     process(H, R, Acc);
 process([[$m, $e, $m, $[ | R] | H], Mask, Acc) ->
     [Address, Value] = string:split(R, "] = "),
-    Mons = string:right(integer_to_list(list_to_integer(Value), 2), length(Mask), $0),
-    process(H, Mask, array:set(list_to_integer(Address), mask(Mask, Mons, []), Acc)).
+    Mons2 = string:right(integer_to_list(list_to_integer(Address), 2), length(Mask), $0),
+    MemAddrs = mask2(Mask, Mons2, [[]]),
+    process(H, Mask, lists:foldl(fun(Addr, Array) -> array:set(Addr, list_to_integer(Value), Array) end, Acc, MemAddrs)).
 
-mask([], [], R) -> list_to_integer(R, 2);
-mask([$X | M], [Y | V], Result) -> mask(M, V, Result ++ [Y]);
-mask([$0 | M], [_ | V], Result) -> mask(M, V, Result ++ [$0]);
-mask([$1 | M], [_ | V], Result) -> mask(M, V, Result ++ [$1]).
+mask2([$X | M], [_ | V], Result)-> mask2(M, V, [ R ++ [B] || R <- Result, B <- [$0, $1]]);
+mask2([$0 | M], [Y | V], Result) -> mask2(M, V, [R ++ [Y] || R <- Result]);
+mask2([$1 | M], [_ | V], Result) -> mask2(M, V, [R ++ [$1] || R <- Result]);
+mask2([], [], Result) -> [ list_to_integer(R, 2) || R <- Result ].
