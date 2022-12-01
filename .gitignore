@@ -2,3 +2,15 @@
 out
 .idea
 *.beam
+
+scala/dist/*
+scala/target/
+scala/lib_managed/
+scala/src_managed/
+scala/project/boot/
+scala/project/plugins/project/
+scala/.history
+scala/.cache
+scala/.lib/
+scala/.bsp
+scala/project/**/target/
