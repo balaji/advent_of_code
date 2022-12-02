@@ -7,7 +7,7 @@ object Day02 {
     println(prep.map((a, b) => {
       (if (a == b) {
         3
-      } else if (win(a) == b) {
+      } else if (b == win(a)) {
         6
       } else {
         0
@@ -15,14 +15,13 @@ object Day02 {
     }).sum)
 
     println(prep.map((a, b) => {
-      val res = if (b == 2) {
-        (a, 3)
+      if (b == 2) {
+        a + 3
       } else if (b == 1) {
-        (lose(a), 0)
+        lose(a) + 0
       } else {
-        (win(a), 6)
+        win(a) + 6
       }
-      res._1 + res._2
     }).sum)
   }
 
