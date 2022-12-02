@@ -202,7 +202,7 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/usr/local/Cellar/openjdk@17/17.0.5/libexec/openjdk.jdk/Contents/Home",
+                "home": "/usr/local/Cellar/openjdk/19.0.1/libexec/openjdk.jdk/Contents/Home",
                 "options": [
                     "-Duser.dir=/Users/balajidamodaran/github/advent_of_code/scala/project"
                 ]

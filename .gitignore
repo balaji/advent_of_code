@@ -14,7 +14,9 @@ scala/.cache
 scala/.lib/
 scala/.bsp
 scala/project/**/target/
+scala/project/**/.bloop
 scala/.bloop
 scala/.vscode
 scala/.metals
 .vscode
+.metals
