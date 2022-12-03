@@ -14,8 +14,7 @@ object Day03 {
         .map(_.toCharArray.toSet))
       .map(f => f(0).intersect(f(1)).head)
       .map(priority)
-      .sum
-    )
+      .sum)
 
     println(prep
       .grouped(3)
