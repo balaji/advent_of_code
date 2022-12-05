@@ -5,15 +5,13 @@ import dev.balaji.Util.lines
 @main
 def main(): Unit = {
   val input = lines(year = 2022, day = 5).mkString("\n").split("\n\n")
-  val crates: Array[List[String]] = input(0).split("\n").dropRight(1)
-    .map(_.split("(?<=\\G.{4})").map(_.trim).toList)
-    .toList.transpose
-    .map(_.filter(_.nonEmpty)).toArray
+  val crates = input(0).split("\n")
+    .dropRight(1)
+    .map(_.split("(?<=\\G.{4})").map(_.trim))
+    .transpose.map(_.filter(_.nonEmpty))
 
   input(1).lines
-    .map {
-      case s"move ${x} from ${y} to ${z}" => (x.toInt, y.toInt - 1, z.toInt - 1)
-    }
+    .map { case s"move ${x} from ${y} to ${z}" => (x.toInt, y.toInt - 1, z.toInt - 1) }
     .forEach(tup => {
       val (i, f, t) = tup
       val toMove = crates(f).take(i).reverse //part B: remove .reverse
