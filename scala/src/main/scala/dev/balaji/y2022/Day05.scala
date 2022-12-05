@@ -2,8 +2,6 @@ package dev.balaji.y2022
 
 import dev.balaji.Util.lines
 
-import java.util
-
 object Day05 {
   def main(args: Array[String]): Unit = {
     val input = lines(2022, 5).mkString("\n").split("\n\n")
