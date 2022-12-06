@@ -12,7 +12,7 @@ def day06(): Unit = {
   // recursion
   @tailrec
   def findIndex(str: String, step: Int, start: Int): Int = {
-    if (str.substring(start, start + step).toSet.size == step) {
+    if (str.substring(start, start + step).distinct.length == step) {
       start + step
     } else {
       findIndex(str, step, start + 1)
@@ -25,7 +25,7 @@ def day06(): Unit = {
     var index = 0
     breakable {
       for (elem <- input.sliding(m)) {
-        if (elem.toSet.size == m) {
+        if (elem.distinct.length == m) {
           println(index + m)
           break
         }
