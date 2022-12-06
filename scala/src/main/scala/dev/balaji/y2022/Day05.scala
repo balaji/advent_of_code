@@ -1,10 +1,10 @@
 package dev.balaji.y2022
 
-import dev.balaji.Util.lines
+import dev.balaji.Util.inputFor
 
 @main
-def main(): Unit = {
-  val input = lines(year = 2022, day = 5).mkString("\n").split("\n\n")
+def day05(): Unit = {
+  val input = inputFor(year = 2022, day = 5).mkString("\n").split("\n\n")
   val crates = input(0).split("\n")
     .dropRight(1)
     .map(_.split("(?<=\\G.{4})").map(_.trim))

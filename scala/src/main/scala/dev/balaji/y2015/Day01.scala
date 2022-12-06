@@ -6,12 +6,12 @@ import scala.annotation.tailrec
 
 object Day01 {
   def main(args: Array[String]): Unit = {
-    println(lines(2015, 1)
+    println(inputFor(2015, 1)
       .flatMap(_.toCharArray)
       .map(c => if (c == '(') 1 else -1)
       .sum)
 
-    println(sum(lines(2015, 1)
+    println(sum(inputFor(2015, 1)
       .flatMap(_.toCharArray).toList, 0, 0))
 
     @tailrec

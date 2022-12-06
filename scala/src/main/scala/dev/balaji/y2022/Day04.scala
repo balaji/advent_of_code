@@ -1,10 +1,10 @@
 package dev.balaji.y2022
 
-import dev.balaji.Util.lines
+import dev.balaji.Util.inputFor
 
 object Day04 {
   def main(args: Array[String]): Unit = {
-    lines(2022, 4)
+    inputFor(2022, 4)
       .map(_.split(',').map(_.split('-').map(_.toInt)))
       .map(arr => {
         val a1 = arr(0)(0)
