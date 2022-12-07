@@ -10,16 +10,15 @@ case class File(name: String, size: Int) extends Entry
 
 @main
 def day07(): Unit = {
-  def findEntry(name: String, dir: Directory): Option[Directory] = dir match {
-    case Directory(n, contents) =>
-      if (n == name) {
-        Some(dir)
-      } else {
-        contents.collect { case e: Directory => e }.flatMap(e => findEntry(name, e)).headOption
-      }
+  def findEntry(name: String, dir: Directory): Option[Directory] = {
+    if (dir.name == name) {
+      Some(dir)
+    } else {
+      dir.contents.collect { case e: Directory => e }.flatMap(e => findEntry(name, e)).headOption
+    }
   }
 
-  def calculateSize(files: Entry): Int = files match {
+  def calculateSize(entry: Entry): Int = entry match {
     case File(_, size) => size
     case Directory(_, contents) => contents.map(calculateSize).sum
   }
@@ -35,18 +34,15 @@ def day07(): Unit = {
 
     case s"$$ cd ${x}" =>
       val dirName = s"${currDir.name}$x/"
-      currDir = findEntry(dirName, root).get
+      currDir = findEntry(dirName, currDir).get
 
     case s"dir ${x}" =>
       val dirName = s"${currDir.name}$x/"
       currDir.contents = currDir.contents :+ Directory(dirName, List())
       dirs = dirs :+ dirName
 
-    case "$ ls" => None // ignore
-
-    case e =>
-      val arr = e.split(" ")
-      currDir.contents = currDir.contents :+ File(arr(1), arr(0).toInt)
+    case s"$size $name" =>
+      if(name != "ls") currDir.contents = currDir.contents :+ File(name, size.toInt)
   }
 
   val sizesMap = dirs.map(elem => elem -> calculateSize(findEntry(elem, root).get)).toMap
