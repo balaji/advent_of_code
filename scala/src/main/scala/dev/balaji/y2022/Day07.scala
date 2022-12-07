@@ -28,13 +28,13 @@ def day07(): Unit = {
   var dirs: List[String] = List("/")
 
   inputFor(2022, 7).drop(1).foreach {
-    case "$ cd .." =>
-      val parent = currDir.name.split("/").toList.dropRight(1).mkString("/") + "/"
-      currDir = findEntry(parent, root).get
-
     case s"$$ cd ${x}" =>
-      val dirName = s"${currDir.name}$x/"
-      currDir = findEntry(dirName, currDir).get
+      val dirName = if (x == "..") {
+        currDir.name.split("/").dropRight(1).mkString("/") + "/" //parent dir
+      } else {
+        s"${currDir.name}$x/"
+      }
+      currDir = findEntry(dirName, root).get
 
     case s"dir ${x}" =>
       val dirName = s"${currDir.name}$x/"
@@ -42,7 +42,7 @@ def day07(): Unit = {
       dirs = dirs :+ dirName
 
     case s"$size $name" =>
-      if(name != "ls") currDir.contents = currDir.contents :+ File(name, size.toInt)
+      if (name != "ls") currDir.contents = currDir.contents :+ File(name, size.toInt)
   }
 
   val sizesMap = dirs.map(elem => elem -> calculateSize(findEntry(elem, root).get)).toMap
