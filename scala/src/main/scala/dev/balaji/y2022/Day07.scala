@@ -23,21 +23,17 @@ def day07(): Unit = {
     case Directory(_, contents) => contents.map(calculateSize).sum
   }
 
-  val root: Directory = Directory(name = "/", contents = List())
+  val root: Directory = Directory(name = "", contents = List())
   var currDir = root
-  var dirs: List[String] = List("/")
+  var dirs: List[String] = List("")
 
   inputFor(2022, 7).drop(1).foreach {
     case s"$$ cd ${x}" =>
-      val dirName = if (x == "..") {
-        currDir.name.split("/").dropRight(1).mkString("/") + "/" //parent dir
-      } else {
-        s"${currDir.name}$x/"
-      }
+      val dirName = if (x == "..") currDir.name.split("/").dropRight(1).mkString("/") else s"${currDir.name}/$x"
       currDir = findEntry(dirName, root).get
 
     case s"dir ${x}" =>
-      val dirName = s"${currDir.name}$x/"
+      val dirName = s"${currDir.name}/$x"
       currDir.contents = currDir.contents :+ Directory(dirName, List())
       dirs = dirs :+ dirName
 
@@ -48,5 +44,5 @@ def day07(): Unit = {
   val sizesMap = dirs.map(elem => elem -> calculateSize(findEntry(elem, root).get)).toMap
 
   println(sizesMap.values.filter(i => i <= 100000).sum)
-  println(sizesMap.values.filter(e => e >= sizesMap("/") - 40000000).min)
+  println(sizesMap.values.filter(e => e >= sizesMap("") - 40000000).min)
 }
