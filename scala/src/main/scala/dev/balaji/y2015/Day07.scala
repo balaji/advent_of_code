@@ -2,7 +2,6 @@ package dev.balaji.y2015
 
 import dev.balaji.Util.inputFor
 
-import scala.annotation.tailrec
 import scala.collection.mutable
 
 @main
