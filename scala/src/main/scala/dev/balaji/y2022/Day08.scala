@@ -5,92 +5,67 @@ import scala.collection.mutable
 
 @main
 def day08(): Unit = {
-  val forest: Array[Array[Char]] = Util.inputFor(2022, 8)
-    .map(_.toCharArray).toArray
+  val forest = Util.inputFor(2022, 8).map(_.toCharArray).toArray
 
-  //check visibility
   val d = forest.length
-  val b = forest(0).length
-  var visible = mutable.Set[(Int, Int)]()
+  var visible = Set[(Int, Int)]()
 
-  for (i <- 0 until d)
-    for (j <- 0 until b)
-      if (i == 0 || j == 0 || i == d - 1 || j == b - 1)
+  for (i <- 0 until d) {
+    var (c1, c2, c3, c4) = (-1, -1, -1, -1)
+    for (j <- 0 until d) {
+      if (forest(j)(i) > c1) {
+        c1 = forest(j)(i)
+        visible += (j, i)
+      }
+
+      if (forest(i)(d - j - 1) > c2) {
+        c2 = forest(i)(d - j - 1)
+        visible += (i, d - j - 1)
+      }
+
+      if (forest(i)(j) > c3) {
+        c3 = forest(i)(j)
         visible += (i, j)
-
-  for (i <- 1 until d - 1) {
-    for (j <- 1 until b - 1) {
-      var tH = (forest(i)(j), (i, j))
-      var a = i - 1
-      while (a >= 0) {
-        if (forest(a)(j) >= tH._1) {
-          tH = (forest(a)(j), (a, j))
-        }
-        a -= 1
       }
-      visible += tH._2
 
-      a = i + 1
-      tH = (forest(i)(j), (i, j))
-      while (a <= d - 1) {
-        if (forest(a)(j) >= tH._1) {
-          tH = (forest(a)(j), (a, j))
-        }
-        a += 1
+      if (forest(d - j - 1)(i) > c4) {
+        c4 = forest(d - j - 1)(i)
+        visible += (d - j - 1, i)
       }
-      visible += tH._2
-
-      a = j - 1
-      tH = (forest(i)(j), (i, j))
-      while (a >= 0) {
-        if (forest(i)(a) >= tH._1) {
-          tH = (forest(i)(a), (i, a))
-        }
-        a -= 1
-      }
-      visible += tH._2
-
-      a = j + 1
-      tH = (forest(i)(j), (i, j))
-      while (a <= b - 1) {
-        if (forest(i)(a) >= tH._1) {
-          tH = (forest(i)(a), (i, a))
-        }
-        a += 1
-      }
-      visible += tH._2
     }
   }
+  println(visible.size)
 
-  val f = visible.map((x: Int, y: Int) => {
-    val v = forest(x)(y)
+  val scenicScore = visible.map((i, j) => {
+    val v = forest(i)(j)
     var (c1, c2, c3, c4) = (0, 0, 0, 0)
-    var a = x - 1
+
+    var a = i - 1
     while (a >= 0) {
       c1 += 1
-      a -= (if (v <= forest(a)(y)) b else 1)
+      a -= (if (v <= forest(a)(j)) d else 1)
     }
 
-    a = x + 1
-    while (a <= d - 1) {
-      c2 += 1
-      a += (if (v <= forest(a)(y)) b else 1)
-    }
-
-    a = y - 1
+    a = j - 1
     while (a >= 0) {
       c3 += 1
-      a -= (if (v <= forest(x)(a)) d else 1)
+      a -= (if (v <= forest(i)(a)) d else 1)
     }
 
-    a = y + 1
-    while (a <= b - 1) {
-      c4 += 1
-      a += (if (v <= forest(x)(a)) d else 1)
+    a = i + 1
+    while (a <= d - 1) {
+      c2 += 1
+      a += (if (v <= forest(a)(j)) d else 1)
     }
+
+    a = j + 1
+    while (a <= d - 1) {
+      c4 += 1
+      a += (if (v <= forest(i)(a)) d else 1)
+    }
+
     c1 * c2 * c3 * c4
   }).max
 
-  println(visible.size)
-  println(f)
+  println(scenicScore)
 }
