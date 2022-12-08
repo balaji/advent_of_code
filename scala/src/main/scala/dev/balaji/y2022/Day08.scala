@@ -20,45 +20,41 @@ def day08(): Unit = {
 
   for (i <- 1 until d - 1) {
     for (j <- 1 until b - 1) {
-      var a = i
-      //left
       var tH = (forest(i)(j), (i, j))
-      while (a > 0) {
-        if (forest(a - 1)(j) >= tH._1) {
-          tH = (forest(a - 1)(j), (a - 1, j))
+      var a = i - 1
+      while (a >= 0) {
+        if (forest(a)(j) >= tH._1) {
+          tH = (forest(a)(j), (a, j))
         }
         a -= 1
       }
       visible += tH._2
 
-      a = i
-      //right
+      a = i + 1
       tH = (forest(i)(j), (i, j))
-      while (a < d - 1) {
-        if (forest(a + 1)(j) >= tH._1) {
-          tH = (forest(a + 1)(j), (a + 1, j))
+      while (a <= d - 1) {
+        if (forest(a)(j) >= tH._1) {
+          tH = (forest(a)(j), (a, j))
         }
         a += 1
       }
       visible += tH._2
 
-      a = j
-      //top
+      a = j - 1
       tH = (forest(i)(j), (i, j))
-      while (a > 0) {
-        if (forest(i)(a - 1) >= tH._1) {
-          tH = (forest(i)(a - 1), (i, a - 1))
+      while (a >= 0) {
+        if (forest(i)(a) >= tH._1) {
+          tH = (forest(i)(a), (i, a))
         }
         a -= 1
       }
       visible += tH._2
 
-      a = j
-      //top
+      a = j + 1
       tH = (forest(i)(j), (i, j))
-      while (a < b - 1) {
-        if (forest(i)(a + 1) >= tH._1) {
-          tH = (forest(i)(a + 1), (i, a + 1))
+      while (a <= b - 1) {
+        if (forest(i)(a) >= tH._1) {
+          tH = (forest(i)(a), (i, a))
         }
         a += 1
       }
@@ -94,6 +90,7 @@ def day08(): Unit = {
     }
     c1 * c2 * c3 * c4
   }).max
+
   println(visible.size)
   println(f)
 }
