@@ -1,7 +1,6 @@
 package dev.balaji.y2022
 
 import dev.balaji.Util
-import scala.collection.mutable
 
 @main
 def day08(): Unit = {
