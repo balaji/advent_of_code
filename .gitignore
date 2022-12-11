@@ -20,3 +20,4 @@ scala/.vscode
 scala/.metals
 .vscode
 .metals
+.ipynb_checkpoints
