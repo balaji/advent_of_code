@@ -1,13 +1,18 @@
 package dev.balaji.y2022
 
-object Day01 {
-  def main(args: Array[String]): Unit = {
-    val source = scala.io.Source.fromFile("../inputs/2022/day01.txt")
-    val sorted = source.getLines.mkString("\n").split("\n\n")
-      .map(_.split("\n").map(_.toInt))
-      .map(_.sum)
-      .sorted
-    println(sorted.last)
-    println(sorted.takeRight(3).sum)
-  }
+import dev.balaji.Util.inputFor
+
+@main
+def day01(): Unit = {
+  val r = inputFor(year = 2022, day = 1)
+    .foldLeft(List[List[Int]](List())) { (acc, line) =>
+      line match {
+        case "" => List() :: acc
+        case l => (l.toInt :: acc.head) :: acc.tail
+      }
+    }
+    .map(_.sum)
+
+  println(r.max)
+  println(r.sorted.takeRight(3).sum)
 }
