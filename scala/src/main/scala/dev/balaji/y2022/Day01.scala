@@ -6,7 +6,7 @@ object Day01 {
     val sorted = source.getLines.mkString("\n").split("\n\n")
       .map(_.split("\n").map(_.toInt))
       .map(_.sum)
-      .toList.sorted
+      .sorted
     println(sorted.last)
     println(sorted.takeRight(3).sum)
   }
