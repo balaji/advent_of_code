@@ -19,7 +19,9 @@ def day10(): Unit = {
 
   cycles
     .grouped(40)
-    .map(_.zipWithIndex.map((index, i) => if ((i - (index % 40)).abs < 2) "#" else "."))
+    .map(
+      _.zipWithIndex.map((index, i) => if ((i - (index % 40)).abs < 2) "#" else ".")
+    )
     .map(_.mkString)
     .foreach(println)
 }

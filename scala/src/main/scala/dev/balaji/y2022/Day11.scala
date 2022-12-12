@@ -2,13 +2,19 @@ package dev.balaji.y2022
 
 import dev.balaji.Util.inputFor
 
-case class Monkey(id: Int, var items: List[BigInt], operation: BigInt => BigInt, toMonkey: BigInt => Int)
+case class Monkey(
+    id: Int,
+    var items: List[BigInt],
+    operation: BigInt => BigInt,
+    toMonkey: BigInt => Int
+)
 
 @main
 def day11(): Unit = {
   var allDivs = List[Int]()
   val monkeys = inputFor(year = 2022, day = 11)
-    .mkString("\n").split("\n\n")
+    .mkString("\n")
+    .split("\n\n")
     .map(arr => {
       var id = 0
       var items: List[BigInt] = List()
@@ -26,19 +32,27 @@ def day11(): Unit = {
               op match {
                 case "* old" => operation = (old: BigInt) => old * old
                 case "+ old" => operation = (old: BigInt) => old + old
-                case s"+ $operand" => operation = (old: BigInt) => old + operand.toInt
-                case s"* $operand" => operation = (old: BigInt) => old * operand.toInt
+                case s"+ $operand" =>
+                  operation = (old: BigInt) => old + operand.toInt
+                case s"* $operand" =>
+                  operation = (old: BigInt) => old * operand.toInt
               }
             case s"Test: divisible by $prime" =>
               allDivs :+= prime.toInt
               test = (t: BigInt) => t % prime.toInt == 0
             case s"If $bool: throw to monkey $num" => {
-              if (bool == "true") yesMonkeyIndex = num.toInt else noMonkeyIndex = num.toInt
+              if (bool == "true") yesMonkeyIndex = num.toInt
+              else noMonkeyIndex = num.toInt
             }
             case s"Monkey $i:" => id = i.toInt
           }
         })
-      (id, items, operation, (i: BigInt) => if (test(i)) yesMonkeyIndex else noMonkeyIndex)
+      (
+        id,
+        items,
+        operation,
+        (i: BigInt) => if (test(i)) yesMonkeyIndex else noMonkeyIndex
+      )
     })
     .map((id, items, operation, indexFn) => Monkey(id, items, operation, indexFn))
 
@@ -55,6 +69,5 @@ def day11(): Unit = {
       monkey.items = List()
     })
   )
-  println(inspected.mkString("Array(", ", ", ")"))
   println(inspected.sorted.takeRight(2).product)
 }

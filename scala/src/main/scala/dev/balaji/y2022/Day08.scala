@@ -35,36 +35,38 @@ def day08(): Unit = {
   }
   println(visible.size)
 
-  val scenicScore = visible.map((i, j) => {
-    val v = forest(i)(j)
-    var (c1, c2, c3, c4) = (0, 0, 0, 0)
+  val scenicScore = visible
+    .map((i, j) => {
+      val v = forest(i)(j)
+      var (c1, c2, c3, c4) = (0, 0, 0, 0)
 
-    var a = i - 1
-    while (a >= 0) {
-      c1 += 1
-      a -= (if (v <= forest(a)(j)) d else 1)
-    }
+      var a = i - 1
+      while (a >= 0) {
+        c1 += 1
+        a -= (if (v <= forest(a)(j)) d else 1)
+      }
 
-    a = j - 1
-    while (a >= 0) {
-      c3 += 1
-      a -= (if (v <= forest(i)(a)) d else 1)
-    }
+      a = j - 1
+      while (a >= 0) {
+        c3 += 1
+        a -= (if (v <= forest(i)(a)) d else 1)
+      }
 
-    a = i + 1
-    while (a <= d - 1) {
-      c2 += 1
-      a += (if (v <= forest(a)(j)) d else 1)
-    }
+      a = i + 1
+      while (a <= d - 1) {
+        c2 += 1
+        a += (if (v <= forest(a)(j)) d else 1)
+      }
 
-    a = j + 1
-    while (a <= d - 1) {
-      c4 += 1
-      a += (if (v <= forest(i)(a)) d else 1)
-    }
+      a = j + 1
+      while (a <= d - 1) {
+        c4 += 1
+        a += (if (v <= forest(i)(a)) d else 1)
+      }
 
-    c1 * c2 * c3 * c4
-  }).max
+      c1 * c2 * c3 * c4
+    })
+    .max
 
   println(scenicScore)
 }

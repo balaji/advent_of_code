@@ -22,7 +22,7 @@ def day07(): Unit = {
   }
 
   def calculateSize(entry: Entry): Int = entry match {
-    case File(_, size) => size
+    case File(_, size)          => size
     case Directory(_, contents) => contents.map(calculateSize).sum
   }
 
@@ -45,10 +45,12 @@ def day07(): Unit = {
       dirs = dirs :+ dirName
 
     case s"$size $name" =>
-      if (name != "ls") currDir.contents = currDir.contents :+ File(name, size.toInt)
+      if (name != "ls")
+        currDir.contents = currDir.contents :+ File(name, size.toInt)
   }
 
-  val sizesMap = dirs.map(elem => elem -> calculateSize(findEntry(elem, root).get)).toMap
+  val sizesMap =
+    dirs.map(elem => elem -> calculateSize(findEntry(elem, root).get)).toMap
 
   println(sizesMap.values.filter(i => i <= 100000).sum)
   println(sizesMap.values.filter(e => e >= sizesMap("") - 40000000).min)

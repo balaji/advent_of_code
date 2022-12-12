@@ -8,7 +8,7 @@ def day01(): Unit = {
     .foldLeft(List[List[Int]](List())) { (acc, line) =>
       line match {
         case "" => List() :: acc
-        case l => (l.toInt :: acc.head) :: acc.tail
+        case l  => (l.toInt :: acc.head) :: acc.tail
       }
     }
     .map(_.sum)
