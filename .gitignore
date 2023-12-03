@@ -2,6 +2,9 @@
 out
 .idea
 *.beam
+*.bsp
+*.fasl
+
 
 scala/dist/*
 scala/target/

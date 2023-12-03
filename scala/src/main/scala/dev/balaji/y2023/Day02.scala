@@ -6,8 +6,6 @@ import dev.balaji.Util.inputFor
 def day02(): Unit = {
   println(
     inputFor(year = 2023, day = 2)
-      .mkString("\n")
-      .split("\n")
       .map { case s"Game $i: $roll" =>
         val game = collection.mutable.Map[String, Int]()
         roll.split("; ").map {
