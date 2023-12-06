@@ -4,12 +4,13 @@ import dev.balaji.Util.inputFor
 
 @main
 def day06(): Unit = {
-  var ((times1, times2) :: (distances1, distances2) :: _) = inputFor(2023, 6).map {
-    case s"$_: $str" => {
-      val regex = """(\d+)""".r
-      (regex.findAllIn(str).map(_.toLong).toList,
-        regex.findAllIn(str.replaceAll(" ", "")).map(_.toLong).toList)
-    }
+  val regex = """(\d+)""".r
+  val ((times1, times2) :: (distances1, distances2) :: _) = inputFor(2023, 6).map {
+    case s"$_: $str" =>
+      (
+        regex.findAllIn(str).map(_.toLong).toList,
+        regex.findAllIn(str.replaceAll(" ", "")).map(_.toLong).toList
+      )
   }.toList
 
   for (g <- List(times1.zip(distances1), times2.zip(distances2)))
