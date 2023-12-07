@@ -2,20 +2,17 @@ package dev.balaji.y2023
 
 import dev.balaji.Util.inputFor
 
-import scala.collection.MapView
-
 @main
 def day07(): Unit = {
-  val lines = inputFor(2023, 7).toList
+  val lines = inputFor(2023, 7).toSeq
   List("part1", "part2").map(p => groupByKind(lines, p)).foreach(println)
 }
 
-def groupByKind(lines: List[String], part: String) = {
-  val subs =
-    Map('A' -> 'Z', 'K' -> 'Y', 'Q' -> 'X', 'J' -> (if part.equals("part2") then '1' else 'W'))
+def groupByKind(lines: Seq[String], part: String) = {
+  val subs = Map('A' -> 'Z', 'K' -> 'Y', 'Q' -> 'X', 'J' -> (if part.equals("part2") then '1' else 'W'))
   lines
     .map(line => {
-      val groupByChars = line.split(" ")(0).toCharArray.groupBy(identity).view.mapValues(_.length)
+      val groupByChars = line.split(" ")(0).toCharArray.groupBy(identity).map((k, v) => (k -> v.length))
       (computeSortOrder(groupByChars, part), line.map(c => subs.getOrElse(c, c)))
     })
     .groupBy(_._1)
@@ -28,7 +25,7 @@ def groupByKind(lines: List[String], part: String) = {
     .sum
 }
 
-def computeSortOrder(groupByChars: MapView[Char, Int], part: String) = {
+def computeSortOrder(groupByChars: Map[Char, Int], part: String) = {
   val (jCount, charsMap) =
     if part.equals("part1") then (1, groupByChars)
     else (groupByChars.getOrElse('J', 0), groupByChars.filterKeys(!_.equals('J')))
