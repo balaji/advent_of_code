@@ -13,5 +13,5 @@ private object Util {
   @tailrec
   def gcd[T: Integral](a: T, b: T): T = if b == 0 then a else gcd(b, a % b)
 
-  def lcm[T: Integral](a: T, b: T): T = a * b / gcd(a, b)
+  def lcm[T: Integral](a: T, b: T): T = a * (b / gcd(a, b))
 }
