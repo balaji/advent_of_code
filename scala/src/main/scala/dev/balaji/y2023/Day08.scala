@@ -2,7 +2,6 @@ package dev.balaji.y2023
 
 import dev.balaji.Util.{inputFor, lcm}
 
-import scala.annotation.tailrec
 val loop = new scala.util.control.Breaks
 
 @main
