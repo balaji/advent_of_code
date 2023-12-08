@@ -5,3 +5,5 @@ lazy val adventOfCode = (project in file("."))
   .settings(
     name := "AdventOfCode"
   )
+libraryDependencies +=
+  "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
