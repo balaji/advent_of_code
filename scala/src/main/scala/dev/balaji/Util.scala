@@ -2,6 +2,7 @@ package dev.balaji
 
 import scala.annotation.tailrec
 import scala.io.Source.fromFile
+import scala.math.Integral.Implicits.infixIntegralOps
 
 private object Util {
   def inputFor(year: Int, day: Int): Iterator[String] = {
@@ -10,7 +11,7 @@ private object Util {
   }
 
   @tailrec
-  def gcd(a: Long, b: Long): Long = if b == 0 then a else gcd(b, a % b)
+  def gcd[T: Integral](a: T, b: T): T = if b == 0 then a else gcd(b, a % b)
 
-  def lcm(a: Long, b: Long): Long = a * b / gcd(a, b)
+  def lcm[T: Integral](a: T, b: T): T = a * b / gcd(a, b)
 }
