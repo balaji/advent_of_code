@@ -18,7 +18,7 @@ def day08(): Unit = {
 def solve(start: Iterable[String], instruction: String, map: Map[String, (String, String)]) = {
   start
     .map(key => calculateSteps(key, instruction, map))
-    .reduce((a, b) => (a * b) / lcm(a, b))
+    .reduce(lcm)
 }
 
 def calculateSteps(start: String, instruction: String, map: Map[String, (String, String)]) = {
@@ -40,4 +40,6 @@ def calculateSteps(start: String, instruction: String, map: Map[String, (String,
 }
 
 @tailrec
-def lcm(a: Long, b: Long): Long = if b == 0 then a else lcm(b, a % b)
+def gcd(a: Long, b: Long): Long = if b == 0 then a else gcd(b, a % b)
+
+def lcm(a: Long, b: Long): Long = a * b / gcd(a, b)
