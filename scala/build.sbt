@@ -5,6 +5,7 @@ lazy val adventOfCode = (project in file("."))
   .settings(
     name := "AdventOfCode"
   )
-libraryDependencies +=
-  "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
+libraryDependencies ++= Seq(
+  "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4",
+  "org.scalatest" %% "scalatest" % "3.2.15" % "test"
+)
