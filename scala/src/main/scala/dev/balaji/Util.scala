@@ -1,13 +1,12 @@
 package dev.balaji
 
 import scala.annotation.tailrec
-import scala.io.Source.fromFile
+import scala.io.Source.fromResource
 import scala.math.Integral.Implicits.infixIntegralOps
 
 private object Util {
   def inputFor(year: Int, day: Int): Iterator[String] = {
-    val source = fromFile("../inputs/%d/day%02d.txt".format(year, day))
-    source.getLines
+    fromResource("inputs/%d/day%02d.txt".format(year, day)).getLines
   }
 
   @tailrec
