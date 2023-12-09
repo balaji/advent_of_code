@@ -29,13 +29,13 @@ object Day02 extends AdventOfCode {
       .sum
   }
 
-  /** Given a semi-colon separated string of rolls, returns a map with highest roll for each of the
-    * cube
+  /** Given a semi-colon separated string of colored cube rolls, returns a map with highest roll for
+    * each of the cube
     *
     * @param roll
-    *   3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+    *   e.g. 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
     * @return
-    *   {blue -> 6, red -> 4, green -> 2}
+    *   e.g. {blue -> 6, red -> 4, green -> 2}
     */
   private def cubeConundrum(roll: String): collection.mutable.Map[String, Int] = {
     val game = collection.mutable.Map[String, Int]()
