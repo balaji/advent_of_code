@@ -4,7 +4,6 @@ import dev.balaji.AdventOfCode
 import dev.balaji.Util.inputFor
 
 import scala.annotation.tailrec
-import scala.util.matching.Regex
 
 object Move extends Enumeration {
   val U, D, L, R, N = Value
@@ -46,13 +45,10 @@ class Inst(val inst: Char) {
 }
 object Day10 extends AdventOfCode {
 
-  override def part1(lines: Seq[String]) = part(lines, solve1).sum
-  override def part2(lines: Seq[String]): Int = part(lines, solve2).sum
+  override def part1(lines: Seq[String]) = part(lines)
+  override def part2(lines: Seq[String]) = part(lines)
 
-  private def part(
-      lines: Seq[String],
-      fn: (Array[Array[(Move.Value, Int)]], Array[Array[(Move.Value, Int)]]) => Seq[Int]
-  ): Seq[Int] = {
+  private def part(lines: Seq[String]) = {
     val array = toInstructions(lines)
     val start = findStart(array)
 
@@ -64,22 +60,15 @@ object Day10 extends AdventOfCode {
           loop(a, a.nextPoint(start), array, defaultArray(array, start, a), 0),
           loop(b, b.nextPoint(start), array, defaultArray(array, start, b), 0)
         ) match {
-          case (Some(a1), Some(a2)) => fn(a1, a2)
-          case _                    => None
+//          case (Some(a1), Some(_)) => Some((a1.map(_.map(_._2).max).max + 1) / 2)
+          case (Some(a1), Some(_)) => solve2(a1)
+          case _                   => None
         }
       })
   }
 
-  def solve1(a1: Array[Array[(Move.Value, Int)]], a2: Array[Array[(Move.Value, Int)]]): Seq[Int] = {
-    for {
-      i <- a1.indices
-      j <- a1(i).indices
-      if a1(i)(j)._2 == a2(i)(j)._2 && a1(i)(j)._2 != 'a'
-    } yield a1(i)(j)._2
-  }
-
-  def solve2(a1: Array[Array[(Move.Value, Int)]], a2: Array[Array[(Move.Value, Int)]]): Seq[Int] = {
-    val strings = a1.map(_.map(y => if y._2 == 'a' then "." else y._1.toString))
+  def solve2(a1: Array[Array[(Move.Value, Int)]]): Seq[Int] = {
+    val strings = a1.map(_.map(y => if y._2 == 'a' then "   .   " else String.format("%05d%s ", y._2, y._1)))
     println(strings.map(_.mkString("", "", "")).mkString("", "\n", ""))
     Seq(0)
   }
