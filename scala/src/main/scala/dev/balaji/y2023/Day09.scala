@@ -31,14 +31,14 @@ object Day09 extends AdventOfCode {
     * @param report
     *   e.g. Array(10,13,16,21,30,45)
     * @return
-    *   next item in the progression, e.g. 5
+    *   previous item in the progression, e.g. 5
     */
   private def solve2(report: Array[Int]): Long =
     report.head - (if report.forall(_ == 0) then 0 else solve2(diff(report)))
 
   private def diff(report: Array[Int]): Array[Int] = (report.tail lazyZip report).map(_ - _)
 
-  /* iteration version, which seems to be idiomatic scala */
+  /* iteration version, which is more idiomatic scala? */
   private def solveIter(report: Array[Int]): Long =
     LazyList.iterate(report)(diff).takeWhile(!_.forall(_ == 0)).map(_.last).sum
 
