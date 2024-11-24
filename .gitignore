@@ -21,3 +21,4 @@ scala/.metals
 .vscode
 .metals
 .ipynb_checkpoints
+erlang/_build
