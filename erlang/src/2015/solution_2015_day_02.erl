@@ -1,20 +1,25 @@
 -module(solution_2015_day_02).
--author("balaji").
 
-%% API
--export([main/1]).
+-export([main/1, run/0]).
 
+-import(string, [to_integer/1, split/3, tokens/2]).
+-import(lists, [sum/1, min/1, sort/1]).
 
-main([FileName | _]) ->
-  L = string:tokens(utils:content(FileName), "\n"),
-  Ld = [[begin {Int, _} = string:to_integer(T), Int end || T <- string:split(Str, "x", all)] || Str <- L],
-  io:format("~p~n", [lists:sum([wrapping_paper(I) || I <- Ld])]),
-  io:format("~p", [lists:sum([ribbon(I) || I <- Ld])]).
+main(FileName) ->
+    find_answer(tokens(utils:content(FileName), "\n")).
 
-wrapping_paper([L, W, H]) ->
-  Rect = [(L * W), (W * H), (H * L)],
-  lists:sum([2 * X || X <- Rect]) + lists:min(Rect).
+find_answer(Inp) ->
+    Ld = [[I || {I, _} <- [to_integer(T) || T <- split(Str, "x", all)]] || Str <- Inp],
+    io:format("~p~n", [sum([wrapping_paper(L, W, H) || [L, W, H | _] <- Ld])]),
+    io:format("~p", [sum([ribbon(L, W, H) || [L, W, H | _] <- Ld])]).
 
-ribbon([L, W, H]) ->
-  [L1, L2, _] = lists:sort([L, W, H]),
-  L1 + L1 + L2 + L2 + (L * W * H).
+wrapping_paper(L, W, H) ->
+    Rect = [L * W, W * H, H * L],
+    sum([2 * X || X <- Rect]) + min(Rect).
+
+ribbon(L, W, H) ->
+    [L1, L2, _] = sort([L, W, H]),
+    L1 + L1 + L2 + L2 + L * W * H.
+
+run() ->
+    find_answer(["1x1x10", "2x3x4"]).

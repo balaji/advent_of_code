@@ -23,7 +23,7 @@ guess_game(L) ->
 
 part1(#{red := Red,green := Green, blue := Blue}, GameId) -> 
     if 
-        Red =< 12 andalso Green =< 13 andalso Blue =< 14 -> GameId;
+        Red =< 12, Green =< 13, Blue =< 14 -> GameId;
         true -> 0
     end. 
 
