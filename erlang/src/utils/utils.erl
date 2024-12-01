@@ -1,7 +1,7 @@
 -module(utils).
 
 -export([array_fetch/3, content/1, gcd/2, groupBy/2, lcm/2, is_integer/1,
-         read_as_integers/2, as_strings/1, read_as_strings/2, remove_dups/1, replace_nth_value/3,
+         read_as_integers/2, as_strings/1, transpose/1, read_as_strings/2, remove_dups/1, replace_nth_value/3,
          bin_to_hex/1, array_get/3, array_set/4, reverse/1]).
 
 read_as_integers(FileName, SplitToken) ->
@@ -93,3 +93,7 @@ groupBy(F, L) ->
     lists:foldr(fun({K, V}, D) -> dict:append(K, V, D) end,
                 dict:new(),
                 [{F(X), X} || X <- L]).
+
+transpose([[]|_]) -> [];
+transpose(M) ->
+  [lists:map(fun hd/1, M) | transpose(lists:map(fun tl/1, M))].
