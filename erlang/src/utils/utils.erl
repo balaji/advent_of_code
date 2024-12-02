@@ -2,15 +2,15 @@
 
 -export([array_fetch/3, content/1, gcd/2, groupBy/2, lcm/2, is_integer/1,
          read_as_integers/2, as_strings/1, transpose/1, read_as_strings/2, remove_dups/1, replace_nth_value/3,
-         bin_to_hex/1, array_get/3, array_set/4, reverse/1]).
+         bin_to_hex/1, array_get/3, array_set/4, split_as_integers/2, remove_nth/2]).
 
 read_as_integers(FileName, SplitToken) ->
     Content = content(FileName),
-    [begin
-         {Int, _} = string:to_integer(Token),
-         Int
-     end
-     || Token <- string:tokens(Content, SplitToken)].
+    [Int || {Int, _} <- [ string:to_integer(Token) || Token <- string:tokens(Content, SplitToken)]].
+
+split_as_integers(FileName, SplitToken) ->
+    FileContent = as_strings(FileName),
+    [[Int || {Int, _} <- [ string:to_integer(Token) || Token <- string:tokens(Content, SplitToken)]] || Content <- FileContent].
 
 as_strings(FileName) ->
     read_as_strings(FileName, "\n").
@@ -81,14 +81,6 @@ hex(C) when C < 10 ->
 hex(C) ->
     $a + C - 10.
 
-reverse(L) ->
-    reverse(L, []).
-
-reverse([], R) ->
-    R;
-reverse([H | T], R) ->
-    reverse(T, [H | R]).
-
 groupBy(F, L) ->
     lists:foldr(fun({K, V}, D) -> dict:append(K, V, D) end,
                 dict:new(),
@@ -97,3 +89,10 @@ groupBy(F, L) ->
 transpose([[]|_]) -> [];
 transpose(M) ->
   [lists:map(fun hd/1, M) | transpose(lists:map(fun tl/1, M))].
+
+remove_nth(0, L) -> L;
+remove_nth(N, L) -> remove_nth(N, L, []).
+remove_nth(_, [], Acc) -> lists:reverse(Acc);
+remove_nth(1, [_ | T], Acc) -> lists:reverse(Acc, T);
+remove_nth(N, [H | T], Acc) -> remove_nth(N - 1, T, [H | Acc]).
+
