@@ -2,7 +2,7 @@
 
 -export([array_fetch/3, content/1, gcd/2, groupBy/2, lcm/2, is_integer/1,
          read_as_integers/2, as_strings/1, transpose/1, read_as_strings/2, remove_dups/1, replace_nth_value/3,
-         bin_to_hex/1, array_get/3, array_set/4, split_as_integers/2, remove_nth/2]).
+         bin_to_hex/1, array_get/3, array_set/4, split_as_integers/2, remove_nth/2, diff/2]).
 
 read_as_integers(FileName, SplitToken) ->
     Content = content(FileName),
@@ -91,8 +91,10 @@ transpose(M) ->
   [lists:map(fun hd/1, M) | transpose(lists:map(fun tl/1, M))].
 
 remove_nth(0, L) -> L;
-remove_nth(N, L) -> remove_nth(N, L, []).
-remove_nth(_, [], Acc) -> lists:reverse(Acc);
-remove_nth(1, [_ | T], Acc) -> lists:reverse(Acc, T);
-remove_nth(N, [H | T], Acc) -> remove_nth(N - 1, T, [H | Acc]).
+remove_nth(Index, L) ->
+    lists:sublist(L, Index - 1) ++ lists:sublist(L, Index + 1, length(L) - Index + 1).
+
+
+diff(F, [_ | T] = L) ->
+    [F(A, B) || {A, B} <- lists:zip(lists:droplast(L), T)].
 
