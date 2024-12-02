@@ -29,7 +29,7 @@ is_progressive(_, _) ->
     false.
 
 is_adjacent(X, Y) ->
-    lists:min([abs(X), abs(Y)]) >= 1 andalso lists:max([abs(X), abs(Y)]) =< 3.
+    lists:member(abs(X), [1,2,3]) and lists:member(abs(Y), [1,2,3]).
 
 part_1(L) ->
     D = diff(L),
