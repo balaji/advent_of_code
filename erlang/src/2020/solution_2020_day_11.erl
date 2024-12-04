@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  A = array:from_list(lists:map(fun(I) -> array:from_list(I) end, utils:as_strings(FileName))),
+  A = array:from_list(lists:map(fun(I) -> array:from_list(I) end, utils:lines(FileName))),
   Dim = {array:size(A), array:size(array:get(0, A))},
   io:format("part 1: ~p, part 2: ~p~n", [
     play(A, Dim, {fun(Arr, Pi, Pj, Li, Lj) -> part1(Arr, Pi, Pj, Li, Lj) end, 4}),

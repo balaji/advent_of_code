@@ -24,7 +24,7 @@ backward_regex() ->
     lists:join("|", lists:map(fun string:reverse/1, maps:keys(number_map()))).
 
 main([FileName| _]) ->
-    L = utils:as_strings(FileName),
+    L = utils:lines(FileName),
     [{part1, lists:sum(lists:map(fun part1/1, L))},
      {part2, lists:sum(lists:map(fun part2/1, L))}].
 

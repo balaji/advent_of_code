@@ -10,7 +10,7 @@ main([FileName | _]) ->
       {Ac, lists:merge(lists:sublist(Y, 1, length(Y) - 1)),
         [list_to_integer(lists:nth(length(Y), Y)), Order]}
     end,
-    utils:as_strings(FileName)),
+    utils:lines(FileName)),
   X = lists:map(
     fun({T, Str, [Num, Order]}) ->
       Inter = [A || {A, _} <- lists:sort(fun({_, V1}, {_, V2}) ->

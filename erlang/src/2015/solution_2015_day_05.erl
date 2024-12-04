@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  L = utils:as_strings(FileName),
+  L = utils:lines(FileName),
   io:format("~p, ~p~n",
     [lists:sum([score(part1(I, [], {false, false})) || I <- L]), lists:sum([score({rule2(I), rule1(I)}) || I <- L])]).
 

@@ -7,7 +7,7 @@
 % then find the lcm of those three. 
 % part 1 is far too brute and riddled with recursion to even think of implementing that.
 main([FileName | _]) ->
-  C = utils:as_strings(FileName),
+  C = utils:lines(FileName),
   Moons = convert(C, []),
   Velocities = [array:to_list(array:new(3, {default, 0})),
     array:to_list(array:new(3, {default, 0})),

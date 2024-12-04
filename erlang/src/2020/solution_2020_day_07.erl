@@ -4,7 +4,7 @@
 
 main([FileName | _]) ->
   L = [string:split(re:replace(S, "( bags| bag|\\.$)", "", [global, {return, list}]), " contain ")
-    || S <- utils:as_strings(FileName)],
+    || S <- utils:lines(FileName)],
   X = lists:map(fun([K, B]) ->
     V = lists:map(fun(I) ->
       [Num, Key] = string:split(I, " "),

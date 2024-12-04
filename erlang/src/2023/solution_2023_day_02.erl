@@ -14,7 +14,7 @@ run() ->
                 "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"]).
 
 main([FileName | _]) ->
-    guess_game(utils:as_strings(FileName)).
+    guess_game(utils:lines(FileName)).
 
 guess_game(L) ->
     Summary = map(fun guess_one_game/1, L),

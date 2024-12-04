@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  RowNums = [row_number(L) || L <- utils:as_strings(FileName)],
+  RowNums = [row_number(L) || L <- utils:lines(FileName)],
   io:format("part 1: ~p, part 2: ~p~n",
     [lists:max(RowNums), missing_seat(lists:sort(RowNums))]).
 

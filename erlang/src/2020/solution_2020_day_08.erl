@@ -7,7 +7,7 @@ main([FileName | _]) ->
     fun(_, S) ->
       [Inst, Arg] = string:split(S, " "),
       {Inst, list_to_integer(Arg)}
-    end, array:from_list(utils:as_strings(FileName))),
+    end, array:from_list(utils:lines(FileName))),
   io:format("part 1: ~p, part 2: ~p~n", [execute(L, 0, 0, sets:new()), fix(L, 0)]).
 
 fix(OriginalSet, Pointer) ->

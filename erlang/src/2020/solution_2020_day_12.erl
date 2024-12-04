@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  L = utils:as_strings(FileName),
+  L = utils:lines(FileName),
   io:format("part 1: ~p, part 2: ~p~n", [part1(L, $E, {0, 0}), part2(L, {10, 1}, {0, 0})]).
 
 part1([], _, {X, Y}) -> abs(X) + abs(Y);

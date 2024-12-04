@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  [Earliest | L] = utils:as_strings(FileName),
+  [Earliest | L] = utils:lines(FileName),
   [F | R] = Routes = lists:map(fun(I) ->
     if I == "x" -> -1; true -> list_to_integer(I) end end, string:split(L, ",", all)),
   DeltaPairs =

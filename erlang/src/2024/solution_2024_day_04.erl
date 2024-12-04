@@ -3,7 +3,7 @@
 -export([main/1, run/0]).
 
 -import(lists, [flatten/1, filter/2, map/2, seq/2, sort/1]).
--import(utils, [array_get/3, as_strings/1]).
+-import(utils, [array_get/3, lines/1]).
 
 run() ->
     solution(["MMMSXXMASM",
@@ -94,4 +94,4 @@ bottom_to_right(_, _, _, _, _) ->
     "".
 
 main(FileName) ->
-    solution(as_strings(FileName)).
+    solution(lines(FileName)).

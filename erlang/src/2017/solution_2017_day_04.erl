@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  L = [string:split(I, " ", all) || I <- utils:as_strings(FileName)],
+  L = [string:split(I, " ", all) || I <- utils:lines(FileName)],
   Y = lists:sum(lists:map(fun(E) ->
     SetSize = sets:size(sets:from_list([lists:sort(X) || X <- E])),
     ListSize = length(E),

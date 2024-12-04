@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  L = utils:as_strings(FileName),
+  L = utils:lines(FileName),
   io:format("~p~n", [process(L, [], array:new())]).
 
 process([], _, Acc) -> lists:sum(array:sparse_to_list(Acc));

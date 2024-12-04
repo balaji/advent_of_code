@@ -3,7 +3,7 @@
 -export([main/1, run/0]).
 
 main(FileName) ->
-    solution(utils:as_strings(FileName)).
+    solution(utils:lines(FileName)).
 
 run() ->
     solution(["00100",

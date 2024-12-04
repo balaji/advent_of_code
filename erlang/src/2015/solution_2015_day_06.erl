@@ -10,7 +10,7 @@ main([FileName | _]) ->
       "toggle" -> {toggle, to_pair(H2), to_pair(B)};
       _ -> {list_to_atom(H2), to_pair(lists:nth(1, T)), to_pair(B)}
     end
-                end, utils:as_strings(FileName)),
+                end, utils:lines(FileName)),
   L = array:new([{size, 1000}, {default, array:new([{size, 1000}, {default, 0}])}]),
   io:format("~p~n", [check_lights_on(execute(X, L), 0, 0)]).
 

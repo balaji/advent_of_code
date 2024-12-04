@@ -3,7 +3,7 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  L = utils:as_strings(FileName),
+  L = utils:lines(FileName),
   Container = lists:map(fun(_) -> [] end, lists:nth(1, L)),
   X = lists:foldl(fun(E, Acc) -> lists:zipwith(fun(A, B) -> A ++ [B] end, Acc, E) end, Container, L),
   R = lists:map(fun(I) ->

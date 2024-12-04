@@ -7,7 +7,7 @@
 -import(utils, [transpose/1]).
 
 main(FileName) ->
-    solution(utils:as_strings(FileName)).
+    solution(utils:lines(FileName)).
 
 run() ->
     solution(["3   4", "4   3", "2   5", "1   3", "3   9", "3   3"]).
