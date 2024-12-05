@@ -16,10 +16,7 @@ split_as_integers(FileName, SplitToken) ->
      || Content <- FileContent].
 
 lines(FileName) ->
-    read_as_string(FileName, "\n").
-
-read_as_string(FileName, SplitToken) ->
-    string:tokens(content(FileName), SplitToken).
+    string:tokens(content(FileName), "\n").
 
 content(FileName) ->
     {ok, Device} = file:open(FileName, [read]),
