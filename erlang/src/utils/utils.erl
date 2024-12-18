@@ -2,7 +2,8 @@
 
 -export([array_fetch/3, content/1, gcd/2, groupBy/2, lcm/2, is_integer/1,
          read_as_integers/2, lines/1, transpose/1, remove_dups/1, replace_nth_value/3,
-         bin_to_hex/1, array_get/3, array_set/4, split_as_integers/2, remove_nth/2, diff/2]).
+         bin_to_hex/1, array_get/3, array_set/4, split_as_integers/2, remove_nth/2, diff/2,
+         permutations/1]).
 
 read_as_integers(FileName, SplitToken) ->
     Content = content(FileName),
@@ -101,3 +102,8 @@ diff(F, [_ | T] = L) ->
      || {A, B}
             <- lists:zip(
                    lists:droplast(L), T)].
+
+permutations([]) ->
+    [[]];
+permutations(L) ->
+    [[H | T] || H <- L, T <- permutations(L -- [H])].
