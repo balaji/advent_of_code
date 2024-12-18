@@ -1,20 +1,42 @@
 -module(utils).
 
--export([array_fetch/3, content/1, gcd/2, groupBy/2, lcm/2, is_integer/1,
-         read_as_integers/2, lines/1, transpose/1, remove_dups/1, replace_nth_value/3,
-         bin_to_hex/1, array_get/3, array_set/4, split_as_integers/2, remove_nth/2, diff/2,
-         permutations/1]).
+-export([
+    array_fetch/3,
+    content/1,
+    gcd/2,
+    groupBy/2,
+    lcm/2,
+    is_integer/1,
+    read_as_integers/2,
+    lines/1,
+    transpose/1,
+    remove_dups/1,
+    replace_nth_value/3,
+    bin_to_hex/1,
+    array_get/3,
+    array_set/4,
+    split_as_integers/2,
+    remove_nth/2,
+    diff/2,
+    permutations/1
+]).
 
 read_as_integers(FileName, SplitToken) ->
     Content = content(FileName),
-    [Int
-     || {Int, _} <- [string:to_integer(Token) || Token <- string:tokens(Content, SplitToken)]].
+    [
+        Int
+     || {Int, _} <- [string:to_integer(Token) || Token <- string:tokens(Content, SplitToken)]
+    ].
 
 split_as_integers(FileName, SplitToken) ->
     FileContent = lines(FileName),
-    [[Int
-      || {Int, _} <- [string:to_integer(Token) || Token <- string:tokens(Content, SplitToken)]]
-     || Content <- FileContent].
+    [
+        [
+            Int
+         || {Int, _} <- [string:to_integer(Token) || Token <- string:tokens(Content, SplitToken)]
+        ]
+     || Content <- FileContent
+    ].
 
 lines(FileName) ->
     string:tokens(content(FileName), "\n").
@@ -75,7 +97,7 @@ is_integer(S) ->
     end.
 
 bin_to_hex(Bin) when is_binary(Bin) ->
-    << <<(hex(H)), (hex(L))>> || <<H:4, L:4>> <= Bin >>.
+    <<<<(hex(H)), (hex(L))>> || <<H:4, L:4>> <= Bin>>.
 
 hex(C) when C < 10 ->
     $0 + C;
@@ -83,9 +105,11 @@ hex(C) ->
     $a + C - 10.
 
 groupBy(F, L) ->
-    lists:foldr(fun({K, V}, D) -> dict:append(K, V, D) end,
-                dict:new(),
-                [{F(X), X} || X <- L]).
+    lists:foldr(
+        fun({K, V}, D) -> dict:append(K, V, D) end,
+        dict:new(),
+        [{F(X), X} || X <- L]
+    ).
 
 transpose([[] | _]) ->
     [];
@@ -98,10 +122,13 @@ remove_nth(Index, L) ->
     lists:sublist(L, Index - 1) ++ lists:sublist(L, Index + 1, length(L) - Index + 1).
 
 diff(F, [_ | T] = L) ->
-    [F(A, B)
-     || {A, B}
-            <- lists:zip(
-                   lists:droplast(L), T)].
+    [
+        F(A, B)
+     || {A, B} <-
+            lists:zip(
+                lists:droplast(L), T
+            )
+    ].
 
 permutations([]) ->
     [[]];

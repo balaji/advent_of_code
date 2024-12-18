@@ -6,16 +6,18 @@
 -import(utils, [array_get/3, lines/1]).
 
 run() ->
-    solution(["MMMSXXMASM",
-              "MSAMXMSMSA",
-              "AMXSXMAAMM",
-              "MSAMASMSMX",
-              "XMASAMXAMM",
-              "XXAMMXXAMA",
-              "SMSMSASXSS",
-              "SAXAMASAAA",
-              "MAMMMXMMMM",
-              "MXMXAXMASX"]).
+    solution([
+        "MMMSXXMASM",
+        "MSAMXMSMSA",
+        "AMXSXMAAMM",
+        "MSAMASMSMX",
+        "XMASAMXAMM",
+        "XXAMMXXAMA",
+        "SMSMSASXSS",
+        "SAXAMASAAA",
+        "MAMMMXMMMM",
+        "MXMXAXMASX"
+    ]).
 
 solution(L) ->
     A = array:from_list([array:from_list(Str) || Str <- L]),
@@ -23,19 +25,33 @@ solution(L) ->
     Width = array:size(array:get(0, A)),
     Points = [{X, Y} || X <- seq(0, Length - 1), Y <- seq(0, Width - 1)],
     Funs =
-        [fun top_to_bottom/5,
-         fun bottom_to_top/5,
-         fun left_to_right/5,
-         fun right_to_left/5,
-         fun top_to_left/5,
-         fun top_to_right/5,
-         fun bottom_to_left/5,
-         fun bottom_to_right/5],
-    [length(filter(fun({_, X}) -> X == "XMAS" end,
-                   flatten([[{P, Fun(A, X, Y, Length, Width)} || Fun <- Funs]
-                            || {X, Y} = P <- Points]))),
-     length(filter(fun({_, Res}) -> Res == true end,
-                   [{P, x_mas(A, X, Y, Length, Width)} || {X, Y} = P <- Points]))].
+        [
+            fun top_to_bottom/5,
+            fun bottom_to_top/5,
+            fun left_to_right/5,
+            fun right_to_left/5,
+            fun top_to_left/5,
+            fun top_to_right/5,
+            fun bottom_to_left/5,
+            fun bottom_to_right/5
+        ],
+    [
+        length(
+            filter(
+                fun({_, X}) -> X == "XMAS" end,
+                flatten([
+                    [{P, Fun(A, X, Y, Length, Width)} || Fun <- Funs]
+                 || {X, Y} = P <- Points
+                ])
+            )
+        ),
+        length(
+            filter(
+                fun({_, Res}) -> Res == true end,
+                [{P, x_mas(A, X, Y, Length, Width)} || {X, Y} = P <- Points]
+            )
+        )
+    ].
 
 x_mas(A, I, J, M, N) when I < M - 1, J < N - 1, I > 0, J > 0 ->
     case array_get(A, I, J) of
@@ -70,26 +86,34 @@ right_to_left(_, _, _, _, _) ->
     "".
 
 top_to_left(A, I, J, M, _) when J > 2, I < M - 3 ->
-    [array_get(A, X, Y)
-     || {X, Y} <- [{I, J}, {I + 1, J - 1}, {I + 2, J - 2}, {I + 3, J - 3}]];
+    [
+        array_get(A, X, Y)
+     || {X, Y} <- [{I, J}, {I + 1, J - 1}, {I + 2, J - 2}, {I + 3, J - 3}]
+    ];
 top_to_left(_, _, _, _, _) ->
     "".
 
 top_to_right(A, I, J, M, N) when I < M - 3, J < N - 3 ->
-    [array_get(A, X, Y)
-     || {X, Y} <- [{I, J}, {I + 1, J + 1}, {I + 2, J + 2}, {I + 3, J + 3}]];
+    [
+        array_get(A, X, Y)
+     || {X, Y} <- [{I, J}, {I + 1, J + 1}, {I + 2, J + 2}, {I + 3, J + 3}]
+    ];
 top_to_right(_, _, _, _, _) ->
     "".
 
 bottom_to_left(A, I, J, _, N) when I > 2, J < N - 3 ->
-    [array_get(A, X, Y)
-     || {X, Y} <- [{I, J}, {I - 1, J + 1}, {I - 2, J + 2}, {I - 3, J + 3}]];
+    [
+        array_get(A, X, Y)
+     || {X, Y} <- [{I, J}, {I - 1, J + 1}, {I - 2, J + 2}, {I - 3, J + 3}]
+    ];
 bottom_to_left(_, _, _, _, _) ->
     "".
 
 bottom_to_right(A, I, J, _, _) when J > 2, I > 2 ->
-    [array_get(A, X, Y)
-     || {X, Y} <- [{I, J}, {I - 1, J - 1}, {I - 2, J - 2}, {I - 3, J - 3}]];
+    [
+        array_get(A, X, Y)
+     || {X, Y} <- [{I, J}, {I - 1, J - 1}, {I - 2, J - 2}, {I - 3, J - 3}]
+    ];
 bottom_to_right(_, _, _, _, _) ->
     "".
 

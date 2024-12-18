@@ -5,17 +5,17 @@
 
 number_map() ->
     #{
-      "one" => "1", 
-      "two" => "2",
-      "three" => "3",
-      "four" => "4",
-      "five" => "5",
-      "six" => "6",
-      "seven" => "7",
-      "eight" => "8",
-      "nine" => "9",
-      "zero" => "0"
-     }.
+        "one" => "1",
+        "two" => "2",
+        "three" => "3",
+        "four" => "4",
+        "five" => "5",
+        "six" => "6",
+        "seven" => "7",
+        "eight" => "8",
+        "nine" => "9",
+        "zero" => "0"
+    }.
 
 forward_regex() ->
     lists:join("|", maps:keys(number_map())).
@@ -23,10 +23,12 @@ forward_regex() ->
 backward_regex() ->
     lists:join("|", lists:map(fun string:reverse/1, maps:keys(number_map()))).
 
-main([FileName| _]) ->
+main([FileName | _]) ->
     L = utils:lines(FileName),
-    [{part1, lists:sum(lists:map(fun part1/1, L))},
-     {part2, lists:sum(lists:map(fun part2/1, L))}].
+    [
+        {part1, lists:sum(lists:map(fun part1/1, L))},
+        {part2, lists:sum(lists:map(fun part2/1, L))}
+    ].
 
 part1(L) ->
     list_to_integer(find_first(L, "\\d") ++ find_first(reverse(L), "\\d")).
@@ -39,8 +41,8 @@ part2(R) ->
 
 find_first(L, R) ->
     case re:run(L, R) of
-	{match, [{A, K}|_]} ->
-	    string:substr(L, A+1, K)
+        {match, [{A, K} | _]} ->
+            string:substr(L, A + 1, K)
     end.
 
 replace_nums(H) ->

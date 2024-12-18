@@ -9,8 +9,9 @@ main([_]) ->
 
 find(String, Index) ->
     <<A, B, C, D, E, F, _/binary>> = utils:bin_to_hex(md5(String ++ integer_to_list(Index))),
-    if A == $0, B == $0, C == $0, D == $0, E == $0, F == $0 ->
-           Index;
-       true ->
-           find(String, Index + 1)
+    if
+        A == $0, B == $0, C == $0, D == $0, E == $0, F == $0 ->
+            Index;
+        true ->
+            find(String, Index + 1)
     end.

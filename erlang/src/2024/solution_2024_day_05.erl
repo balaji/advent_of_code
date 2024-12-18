@@ -8,13 +8,17 @@
 main(FileName) ->
     [Order, Updates] = [tokens(E, "\n") || E <- split(utils:content(FileName), "\n\n")],
     Rules =
-        foldl(fun([M, N], Y) -> maps:put(M, [N] ++ maps:get(M, Y, []), Y) end,
-              maps:new(),
-              [split(E, "|") || E <- Order]),
+        foldl(
+            fun([M, N], Y) -> maps:put(M, [N] ++ maps:get(M, Y, []), Y) end,
+            maps:new(),
+            [split(E, "|") || E <- Order]
+        ),
     Pages = [split(Update, ",", all) || Update <- Updates],
     Corrects =
-        map(fun({_, E}) -> E end,
-            filter(fun({E, _}) -> E == true end, [{part1(Page, Rules), Page} || Page <- Pages])),
+        map(
+            fun({_, E}) -> E end,
+            filter(fun({E, _}) -> E == true end, [{part1(Page, Rules), Page} || Page <- Pages])
+        ),
     Fixeds = [part2(InCorrect, Rules, []) || InCorrect <- subtract(Pages, Corrects)],
 
     [sum([list_to_integer(nth(round(length(E) / 2), E)) || E <- P]) || P <- [Corrects, Fixeds]].
@@ -50,8 +54,8 @@ find_pointer([N | T], H, Rules, P2) ->
     end.
 
 swap(L, I, J) ->
-    sublist(L, 1, I - 1)
-    ++ [nth(J, L)]
-    ++ sublist(L, I + 1, J - I - 1)
-    ++ [nth(I, L)]
-    ++ sublist(L, J + 1, length(L) - J).
+    sublist(L, 1, I - 1) ++
+        [nth(J, L)] ++
+        sublist(L, I + 1, J - I - 1) ++
+        [nth(I, L)] ++
+        sublist(L, J + 1, length(L) - J).

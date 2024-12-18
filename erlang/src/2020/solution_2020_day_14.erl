@@ -3,16 +3,24 @@
 -export([main/1]).
 
 main([FileName | _]) ->
-  L = utils:lines(FileName),
-  io:format("~p~n", [process(L, [], array:new())]).
+    L = utils:lines(FileName),
+    io:format("~p~n", [process(L, [], array:new())]).
 
-process([], _, Acc) -> lists:sum(array:sparse_to_list(Acc));
-process([[$m, $a, $s, $k, $ , $=, $  | R] | H], _, Acc) -> process(H, R, Acc);
+process([], _, Acc) ->
+    lists:sum(array:sparse_to_list(Acc));
+process([[$m, $a, $s, $k, $\s, $=, $\s | R] | H], _, Acc) ->
+    process(H, R, Acc);
 process([[$m, $e, $m, $[ | R] | H], Mask, Acc) ->
-  [Address, Value] = string:split(R, "] = "),
-  Mons2 = string:right(integer_to_list(list_to_integer(Address), 2), length(Mask), $0),
-  MemAddrs = mask2(Mask, Mons2, [[]]),
-  process(H, Mask, lists:foldl(fun(Addr, Array) -> array:set(Addr, list_to_integer(Value), Array) end, Acc, MemAddrs)).
+    [Address, Value] = string:split(R, "] = "),
+    Mons2 = string:right(integer_to_list(list_to_integer(Address), 2), length(Mask), $0),
+    MemAddrs = mask2(Mask, Mons2, [[]]),
+    process(
+        H,
+        Mask,
+        lists:foldl(
+            fun(Addr, Array) -> array:set(Addr, list_to_integer(Value), Array) end, Acc, MemAddrs
+        )
+    ).
 
 mask2([$X | M], [_ | V], Result) -> mask2(M, V, [R ++ [B] || R <- Result, B <- [$0, $1]]);
 mask2([$0 | M], [Y | V], Result) -> mask2(M, V, [R ++ [Y] || R <- Result]);

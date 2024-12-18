@@ -5,10 +5,17 @@
 main(FileName) ->
     L = utils:content(FileName),
     [R1, R2] = split_map(L, 0, [[], []]),
-    io:format("~p~n",
-              [sets:size(
-                   sets:union(find_houses(R1, 0, 0, sets:new()),
-                              find_houses(R2, 0, 0, sets:new())))]).
+    io:format(
+        "~p~n",
+        [
+            sets:size(
+                sets:union(
+                    find_houses(R1, 0, 0, sets:new()),
+                    find_houses(R2, 0, 0, sets:new())
+                )
+            )
+        ]
+    ).
 
 split_map([], _, Res) ->
     Res;
