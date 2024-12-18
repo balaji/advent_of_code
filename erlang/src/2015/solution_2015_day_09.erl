@@ -10,11 +10,9 @@ parse(S) ->
         fun(E, {M_acc, L_acc}) ->
             [M, L] =
                 case re:run(E, "(\\w+) to (\\w+) = (\\d+)", [{capture, all, list}]) of
-                    {match, C} ->
-                        A = lists:nth(2, C),
-                        B = lists:nth(3, C),
-                        Distance = list_to_integer(lists:nth(4, C)),
-                        [#{A ++ ":" ++ B => Distance, B ++ ":" ++ A => Distance}, [A, B]];
+                    {match, [_, A, B, C]} ->
+                        Distance = list_to_integer(C),
+                        [#{A ++ B => Distance, B ++ A => Distance}, [A, B]];
                     _ ->
                         error
                 end,
@@ -25,18 +23,11 @@ parse(S) ->
     ).
 
 distance(K, M) ->
-    KeysList =
-        lists:map(
-            fun(L) ->
-                lists:zipwith(fun(X, Y) -> X ++ ":" ++ Y end, tl(L), lists:droplast(L))
-            end,
-            K
-        ),
     lists:map(
         fun(Keys) ->
             lists:foldl(fun(Key, Acc) -> maps:get(Key, M) + Acc end, 0, Keys)
         end,
-        KeysList
+        [lists:zipwith(fun(X, Y) -> X ++ Y end, tl(L), lists:droplast(L)) || L <- K]
     ).
 
 solution(Inp) ->
