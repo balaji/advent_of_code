@@ -2,7 +2,7 @@
 
 -export([main/1, run/0]).
 
--import(lists, [all/2, any/2, droplast/1, map/2, member/2, seq/2, zip/2]).
+-import(lists, [all/2, any/2, droplast/1, map/2, member/2, seq/2, zipwith/3]).
 
 main(FileName) ->
     solution(utils:split_as_integers(FileName, " ")).
@@ -18,7 +18,7 @@ run() ->
     ]).
 
 part_1(Lx) ->
-    L = utils:diff(fun(X, Y) -> Y - X end, Lx),
+    L = zipwith(fun(X, Y) -> Y - X end, droplast(Lx), tl(Lx)),
     all(fun(X) -> member(X, [-1, -2, -3]) end, L) or
         all(fun(X) -> member(X, [1, 2, 3]) end, L).
 

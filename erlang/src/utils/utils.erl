@@ -17,7 +17,6 @@
     array_set/4,
     split_as_integers/2,
     remove_nth/2,
-    diff/2,
     permutations/1
 ]).
 
@@ -120,15 +119,6 @@ remove_nth(0, L) ->
     L;
 remove_nth(Index, L) ->
     lists:sublist(L, Index - 1) ++ lists:sublist(L, Index + 1, length(L) - Index + 1).
-
-diff(F, [_ | T] = L) ->
-    [
-        F(A, B)
-     || {A, B} <-
-            lists:zip(
-                lists:droplast(L), T
-            )
-    ].
 
 permutations([]) ->
     [[]];
